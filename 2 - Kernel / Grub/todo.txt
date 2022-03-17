@@ -1,0 +1,33 @@
+[1] Download Kernel: https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.185.tar.xz
+[2] tar -xvf 'Archive.tar
+
+
+[3] apt install flex bison make libncurses-dev
+[4] make defconfig
+
+[5] make menuconfig
+    -> General setup -> local version -vvaucoul
+
+cat .config | grep CONFIG_LOCALVERSION
+
+[6] apt-get install libssl-dev libelf-dev
+[7] make -j04
+
+[8] cp -iv arch/x86_64/boot/bzImage /boot/vmlinuz-5.4.185-vvaucoul
+
+[9] Install Grub
+    -> grub-install /dev/sdb
+
+[10] sudo update-grub
+/boot/grub/grub.cfg ->
+
+# Begin /boot/grub/grub.cfg
+set default=0
+set timeout=5
+
+insmod ext2
+set root=(hd0,2)
+
+menuentry "GNU/Linux, Linux 5.4.185-yourlogin" {
+        linux   /vmlinuz-5.4.185-yourlogin root=/dev/sda4 ro
+}

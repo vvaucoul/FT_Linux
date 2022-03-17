@@ -1,0 +1,13 @@
+POINT DE MONTAGE	TAILLE	PARTITION
+/boot	            100 Mo	/dev/sdb1
+/                   30  Go	/dev/sdb2
+/home	            10  Go	/dev/sdb3
+swap            	2   Go	/dev/sdb5
+
+
+Device     Boot    Start       End  Sectors  Size Id Type
+/dev/sdb1  *        2048    206847   204800  100M 83 Linux
+/dev/sdb2         206848  63121407 62914560   30G 83 Linux
+/dev/sdb3       63121408  84092927 20971520   10G 83 Linux
+/dev/sdb4       84092928 104857599 20764672  9.9G  5 Extended
+/dev/sdb5       84094976  88289279  4194304    2G 82 Linux swap / Solaris

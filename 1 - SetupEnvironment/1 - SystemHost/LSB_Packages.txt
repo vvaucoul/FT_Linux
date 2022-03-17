@@ -1,0 +1,40 @@
+Coeur (Core) :
+
+At (BLFS)	Bash	Batch
+(partie d’At, BLFS)
+Bc	Binutils	Coreutils
+Cpio (BLFS)	Diffutils	Ed (BLFS)
+Fcrontab (BLFS)	File	Findutils
+Gawk	Grep	Gzip
+Initd-tools (BLFS)	Lsb_release (BLFS)	M4
+Man-DB	Ncurses	NSPR (BLFS)
+NSS (BLFS)	PAM (BLFS)	Pax (BLFS)
+Procps	Psmisc	Sed
+Sendmail
+(ou Postfix ou Exim, BLFS)	Shadow	Tar
+Time (BLFS)	Util-linux	Zlib
+
+Bureau (Desktop) :
+
+Alsa (BLFS)	ATK (BLFS)	Cairo (BLFS)
+Desktop-file-utils (BLFS)	Freetype (BLFS)	Fontconfig (BLFS)
+Gdk-pixbuf (BLFS)	Glib2 (BLFS)	GTK+2 (BLFS)
+Icon-naming-utils (BLFS)	Libjpeg-turbo (BLFS)	Libpng (BLFS)
+Libtiff (BLFS)	Libxml2 (BLFS)	MesaLib (BLFS)
+Pango (BLFS)	Qt4 ou Qt5
+(ni LFS ni BLFS, but required for LSB)	Xdg-utils (BLFS)
+Xorg (BLFS)		
+
+Langages à l’exécution (Runtime languages) :
+
+Perl	Python	Libxml2 (BLFS)
+Libxslt (BLFS)
+
+Impression (Printing) :
+
+CUPS (BLFS)	Cups-filters (BLFS)	Ghostscript (BLFS)
+SANE (BLFS)
+
+Gtk3 et images (Gtk3 and Graphics) :
+
+GTK+3 (BLFS)
