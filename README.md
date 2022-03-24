@@ -103,3 +103,39 @@ make -j04
 
 "04" correspond au nombre de coeurs utilisés lors de la compilation. Libre à vous de changer ce nombre.
 La compilation dure en moyenne 10 minutes
+
+* x32
+```
+cp arch/x86/boot/bzImage /boot/vmlinuz-5.4.187-login
+```
+* x64
+```
+cp arch/x86_64/boot/bzImage /boot/vmlinuz-5.4.187-login
+```
+
+### Grub
+
+```
+grub-install /dev/sdb
+cd /boot/grub
+cp grub.cfg bck_grub.cfg
+chmod 644 grub.cfg
+```
+
+* Grub Configuration:
+edit:
+> /boot/grub/grub.cfg
+	
+	```
+	# Begin /boot/grub/grub.cfg
+	set default=5
+	set timeout=5
+
+	insmod ext2
+	set root=(hd0,msdos5)
+
+	menuentry "GNU/Linux, Linux 5.4.187-login" {
+	        linux   /boot/vmlinuz-5.4.187-login root=/dev/sda4 ro
+	}
+	```
+
