@@ -1,7 +1,12 @@
 <p align="center">
-	![alt text](https://cdn-icons-png.flaticon.com/512/226/226772.png)
+  <img 
+    width="500"
+    height="500"
+    src="https://cdn-icons-png.flaticon.com/512/226/226772.png"
+  >
 </p>
-#FT_LINUX
+
+# FT_LINUX
 
 Creer sa distribution linux from scratch !
 
