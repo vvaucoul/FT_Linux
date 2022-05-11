@@ -1,5 +1,5 @@
 <p align="center">
-	![](https://cdn-icons-png.flaticon.com/512/226/226772.png)
+	![alt text](https://cdn-icons-png.flaticon.com/512/226/226772.png)
 </p>
 #FT_LINUX
 
