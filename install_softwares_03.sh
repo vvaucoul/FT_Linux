@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/09 17:53:59 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/09 18:37:07 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/11 20:27:11 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,3 +69,5 @@ ln -s ../../../libgcc/gthr-posix.h $LFS_TGT/libgcc/gthr-default.h
 make
 make DESTDIR=$LFS install
 ln -sv gcc $LFS/usr/bin/cc
+cd ../..
+rm -rf gcc-11.2.0
