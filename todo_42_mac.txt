@@ -1,6 +1,0 @@
-reprendre au make check du install_software_05
-
-http://fr.linuxfromscratch.org/view/lfs-stable/chapter08/glibc.html
-https://lfs.vlsm.org/LFS-08-01.html
-
-pour remettre le lfs: mount -v -t ext4 /dev/sdb4 $LFS
