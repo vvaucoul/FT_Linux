@@ -5,24 +5,23 @@
     src="https://cdn-icons-png.flaticon.com/512/226/226772.png"
 img/>
 
-#FT_LINUX
+# FT_LINUX
 
-Creer sa distribution linux from scratch !
+Créer sa distribution linux from scratch !
 
-Tutoriel de reference: [LFS](http://fr.linuxfromscratch.org/view/lfs-stable/ "LFS")
-- LFS 11.1
-- Kernel Linux 5.xx
+Tutoriel de réference: <strong>[LFS](http://fr.linuxfromscratch.org/view/lfs-stable/ "LFS")</strong>
+- LFS <strong>11.1</strong>
+- Kernel Linux <strong>5.16.9</strong>
 
 ------------
 
-### Creation de la VM
+### Création de la VM
 
-- Installez un linux en tant que systeme host pour creer notre LFS
-- Linux Kernel 5.X
-- Espace disque 16GB vdi
-- Une fois installe, inserrez un second disque d une taille de 32GB qui contiendra notre LFS
+- Installez un linux en tant que systeme host pour créer notre LFS (Ubuntu, debian, Arch, Fedora, ...)
+- <strong>[SDA]</strong> Espace disque 16GB vdi
+- <strong>[SDB]</strong> Une fois installe, inserrez un second disque d une taille de 32GB qui contiendra notre LFS
 
-### Prerequis
+### Prérequis
 
 > SSH:
 
@@ -36,6 +35,12 @@ ip address | grep inet
 ```
 
 - Ajoutez une regle port forwarding sur virtual box
+  - Name: SSH
+  - Protocol: TCP
+  - Host IP: 127.0.0.1
+  - Host Port: 2222
+  - IP Guest: Empty
+  - Port Guest: 22
 
 > Paquets a installer: 
 
@@ -48,9 +53,7 @@ sudo apt-get autoclean -y </dev/null
 sudo apt-get clean -y </dev/null
 sudo rm -rf /bin/sh
 sudo ln -s /usr/bin/bash /bin/sh
-sudo apt-get install apt-file automake build-essential git liblocale-msgfmt-perl locales-all parted bison make patch texinfo gawk vim g++ --fix-missing -y
-sudo apt-get install bash gzip binutils findutils gawk gcc libc6 grep gzip m4 make patch perl python sed tar texinfo xz-utils bison curl -y
- sudo apt-get install libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf -y
+sudo apt-get install apt-file automake build-essential git liblocale-msgfmt-perl locales-all parted bison make patch texinfo gawk vim g++ bash gzip binutils findutils gawk gcc libc6 grep gzip m4 make patch perl python sed tar texinfo xz-utils bison curl libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf --fix-missing -y
 sudo apt-file update
 ```
 
@@ -76,11 +79,11 @@ sudo apt-file update
 > - Resultat:
 
     NAME     UUID   FSTYPE   MOUNTPOINT    SIZE
-    sdb                          							              32G
-    ├─sdb1             							                      1M			# BIOS BOOT
+    sdb                          							      32G
+    ├─sdb1             							                  1M			# BIOS BOOT
     ├─sdb2             								              200M			# EFI SYSTEM
-    ├─sdb3             								              4G			#  LINUX SWAP
-    └─sdb4             								             27,8G			#  ROOT /
+    ├─sdb3             								              4G			# LINUX SWAP
+    └─sdb4             								              27,8G			# ROOT /
 
 ```bash
  sudo mkfs -v -t ext2 /dev/sdb2
@@ -347,15 +350,12 @@ chmod -v 600  /var/log/btmp
 
 ```bash
 rm -rf /usr/share/{info,man,doc}/*
-
 find /usr/{lib,libexec} -name \*.la -delete
-
 rm -rf /tools
-
 exit
 ```
 
-#### - Sauvegarde
+#### - Sauvegarde (Optionnel)
 > Temps de sauvegarde ~10 minutes
 
 ```bash
@@ -366,7 +366,7 @@ cd $LFS
 tar -cJpf $HOME/lfs-temp-tools-11.1.tar.xz .
 ```
 
-#### - Restauration du systeme
+#### - Restauration du systeme (Optionnel)
 
 ```bash
 cd $LFS
@@ -393,8 +393,7 @@ Avant de lancer le prochain script, pensez à faire une backup de votre VM ! Il 
 
 > Lancez le script "install_softwares_05.sh"
 
-> Si vous souhaitez ne pas déboguer les logiciels systèmes, vous pouvez libérer 2GO en lancant le script suivant:
-> cleanup_softwares.sh
+> Si vous souhaitez ne pas déboguer les logiciels systèmes, vous pouvez libérer 2GO en lancant le script suivant: cleanup_softwares.sh
 
 ```bash
 rm -rf /tmp/*
