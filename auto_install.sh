@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/14 18:09:25 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/14 18:18:36 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -161,7 +161,6 @@ case $(uname -m) in
   x86_64) chown -v lfs $LFS/lib64 ;;
 esac
 
-
 # Init LFS Shell
 cp -f ./scripts/lfs/init-lfs-shell.sh /home/lfs/init-lfs-shell.sh
 cp -f ./scripts/lfs/check-lfs-initialisation.sh /home/lfs/check-lfs-initialisation.sh
@@ -188,15 +187,19 @@ chmod 755 /etc/sudoers
 cp /etc/sudoers /etc/sudoers.bak
 echo "lfs      ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+debug:
+
 export LFS=/mnt/lfs
 cp -f ./scripts/install/* $LFS/sources/
-su - lfs << EOF
+sudo su - lfs << EOF
 sudo su
 cd $LFS/sources/
 sh install_softwares.sh
 sh install_softwares_02.sh
 sh install_softwares_03.sh
 EOF
+
+exit 1
 
 #Creation des outils temporaires suplementaires
 chown -R root:root $LFS/{usr,lib,var,etc,bin,sbin,tools}
@@ -217,8 +220,6 @@ mount -vt tmpfs tmpfs $LFS/run
 if [ -h $LFS/dev/shm ]; then
   mkdir -pv $LFS/$(readlink $LFS/dev/shm)
 fi
-
-debug:
 
 sudo chroot "$LFS" /usr/bin/env -i   \
     HOME=/root                  \
