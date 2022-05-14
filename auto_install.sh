@@ -12,6 +12,12 @@
 
 # Auto install LFS with this script
 
+# Check Root
+if [ "$EUID" -ne 0 ]
+  then echo "Error: run this script as root..."
+  exit
+fi
+
 # Update Host system
 sudo apt-get update -y
 sudo apt-get upgrade -y
@@ -56,8 +62,8 @@ lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sdb
 sleep 1
 
 
-curl http://fr.linuxfromscratch.org/view/lfs-stable/wget-list > wget-list
-curl http://fr.linuxfromscratch.org/view/lfs-stable/md5sums > md5sums
+curl https://raw.githubusercontent.com/vvaucoul/FT_Linux/main/wget-list > wget-list
+curl https://raw.githubusercontent.com/vvaucoul/FT_Linux/main/md5sums > md5sums
 
 wget --input-file=wget-list --continue --directory-prefix=$LFS/sources
 cp md5sums $LFS/sources/md5sums

@@ -75,7 +75,7 @@ a91b404e30561a5df803e6eb3a53be71  texinfo-6.8.tar.xz
 3168ff48e382a1201bd0cbd0209bd3e0  vim-8.2.4383.tar.gz
 80bb18a8e6240fcf7ec2f7b57601c170  XML-Parser-2.46.tar.gz
 aa1621ec7013a19abab52a8aff04fe5b  xz-5.2.5.tar.xz
-85adef240c5f370b308da8c938951a68  zlib-1.2.11.tar.xz
+85adef240c5f370b308da8c938951a68  zlib-1.2.12.tar.xz
 072b10f71f5820c24761a65f31f43e73  zstd-1.5.2.tar.gz
 3df11b6123d5bbdb0fc83862a003827a  binutils-2.38-lto_fix-1.patch
 6a5ac7e89b791aae556de0f745916f7f  bzip2-1.0.8-install_docs-1.patch
