@@ -6,17 +6,29 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/14 11:59:01 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/14 13:22:51 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Auto install LFS with this script
+
+# TMP
+function jumpto
+{
+    label=$1
+    cmd=$(sed -n "/$label:/{:a;n;p;ba};" $0 | grep -v ':$')
+    eval "$cmd"
+    exit
+}
 
 # Check Root
 if [ "$EUID" -ne 0 ]
   then echo "Error: run this script as root..."
   exit
 fi
+
+debug=${1:-"debug"}
+jumpto $debug
 
 # Update Host system
 sudo apt-get update -y
@@ -40,6 +52,14 @@ then
     exit 1
 fi
 sh ./scripts/check/version-check.sh | grep "échouée"
+res=$?
+
+if [ $res != 1 ]
+then
+    echo "Error: install packages requiered by LFS..."
+    exit 1
+fi
+sh ./scripts/check/version-check.sh | grep "not"
 res=$?
 
 if [ $res != 1 ]
@@ -96,3 +116,67 @@ rm -rf ./wget-list ./md5sums
 pushd $LFS/sources
 md5sum -c md5sums
 popd
+
+
+sh ./scripts/check/check_archives.sh
+sh ./scripts/check/check_archives.sh | grep "Not Found"
+var=$?
+
+if [ $var == 0 ]
+then
+    echo "Error when downloading archives..."
+    exit 1
+fi
+
+# Preparation Suite
+mkdir -v $LFS/tools
+ln -sv $LFS/tools /
+mkdir -pv $LFS/{etc,var} $LFS/usr/{bin,lib,sbin}
+for i in bin lib sbin; do
+  ln -sv usr/$i $LFS/$i
+done
+case $(uname -m) in
+  x86_64) mkdir -pv $LFS/lib64 ;;
+esac
+
+# LFS User
+groupadd lfs
+useradd -s /bin/bash -g lfs -m -k /dev/null lfs
+printf 'toor\ntoor\n' | passwd lfs
+
+# Preparation Suite
+chown -v lfs $LFS/tools
+chown -v lfs $LFS/sources
+
+chown -v lfs $LFS/{usr{,/*},lib,var,etc,bin,sbin,tools}
+case $(uname -m) in
+  x86_64) chown -v lfs $LFS/lib64 ;;
+esac
+
+# Init LFS Shell
+cp -f ./scripts/lfs/init-lfs-shell.sh /home/lfs/init-lfs-shell.sh
+cp -f ./scripts/lfs/check-lfs-initialisation.sh /home/lfs/check-lfs-initialisation.sh
+su - lfs << EOF
+sh init-lfs-shell.sh
+sh check-lfs-initialisation.sh
+exec <&-
+EOF
+
+# Check LFS Script version-check
+echo "dash dash/sh boolean false" | debconf-set-selections
+DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+apt-get install -y gawk
+apt-get install -y bison
+apt-get install -y build-essential
+apt-get update && apt-get upgrade -y
+
+curl http://www.linuxfromscratch.org/lfs/view/stable/chapter02/hostreqs.html | grep -A53 "# Simple script to list version numbers of critical development tools" | sed 's:</code>::g' | sed 's:&gt;:>:g' | sed 's:&lt;:<:g' | sed 's:&amp;:\&:g' | sed 's:failed:not OK:g' > version-check.sh
+bash version-check.sh | grep not
+rm -rf version-check.sh
+
+# Creation du systeme temporaire
+chmod 755 /etc/sudoers
+cp /etc/sudoers /etc/sudoers.bak
+echo "lfs      ALL=(ALL:ALL) ALL" >> /etc/sudoers
+
+debug:
