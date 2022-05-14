@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/14 13:27:56 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/14 13:48:56 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -185,4 +185,5 @@ export LFS=/mnt/lfs
 cp -f ./scripts/install/* $LFS/sources/
 su - lfs << EOF
 cd $LFS/sources/
+printf 'toor\n' | sudo -S sh install_softwares.sh
 EOF
