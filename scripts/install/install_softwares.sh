@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/03 15:41:28 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/14 17:04:01 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/14 19:48:42 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -120,6 +120,12 @@ make DESTDIR=$LFS install
 sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
 echo 'int main(){}' > dummy.c
 $LFS_TGT-gcc dummy.c
+if [ $? == 127 ]
+then
+    echo "gcc: error: cannot find the start of the dynamic linker"
+    echo "gcc: error: cannot find the start of the dynamic linker" >&2
+    exit 1
+fi
 readelf -l a.out | grep '/ld-linux'
 rm -v dummy.c a.out
 $LFS/tools/libexec/gcc/$LFS_TGT/11.2.0/install-tools/mkheaders

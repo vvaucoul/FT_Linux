@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/14 19:46:31 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/14 19:49:35 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -182,12 +182,16 @@ curl http://www.linuxfromscratch.org/lfs/view/stable/chapter02/hostreqs.html | g
 bash version-check.sh | grep not
 rm -rf version-check.sh
 
+debug:
+
 # Creation du systeme temporaire
 chmod 755 /etc/sudoers
 cp /etc/sudoers /etc/sudoers.bak
-echo "lfs      ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
-
-debug:
+cat /etc/sudoers | grep "lfs"
+if [ $? != 0 ]
+then
+    echo "lfs ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+fi
 
 export LFS=/mnt/lfs
 cp -f ./scripts/install/* $LFS/sources/
