@@ -23,10 +23,11 @@ sudo rm -rf /bin/sh
 sudo ln -s /usr/bin/bash /bin/sh
 sudo apt-get install apt-file automake build-essential git liblocale-msgfmt-perl locales-all parted bison make patch texinfo gawk vim g++ bash gzip binutils findutils gawk gcc libc6 grep gzip m4 make patch perl sed tar texinfo xz-utils bison curl libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf --fix-missing -y
 
+# Check if SDB disk is valid
 lsblk /dev/sdb
 var=$?
 
-if [ var != 0 ]
+if [ $var != 0 ]
 then
     echo "Before format partitions, insert a second disk..."
     exit 1
@@ -34,3 +35,35 @@ fi
 
 # Create Partitions on Disk SDB
 printf 'g\nn\n\n\n+1M\nt\n4\nn\n\n\n+200M\nt\n2\n1\nn\n\n\n+4G\nt\n3\n19\nn\n\n\n\nw\n' | fdisk /dev/sdb
+
+# Verification
+lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sdb
+sleep 1
+
+# Preparations
+cd ~
+export LFS=/mnt/lfs
+mkdir -v $LFS
+mount -v -t ext4 /dev/sdb4 $LFS
+swapoff /dev/sdb3
+mkswap /dev/sdb3
+swapon /dev/sdb3
+mkdir -v $LFS/sources
+chmod -v a+wt $LFS/sources
+
+# Verification 02 
+lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sdb
+sleep 1
+
+
+curl http://fr.linuxfromscratch.org/view/lfs-stable/wget-list > wget-list
+curl http://fr.linuxfromscratch.org/view/lfs-stable/md5sums > md5sums
+
+wget --input-file=wget-list --continue --directory-prefix=$LFS/sources
+cp md5sums $LFS/sources/md5sums
+
+rm -rf ./wget-list ./md5sums
+
+pushd $LFS/sources
+md5sum -c md5sums
+popd
