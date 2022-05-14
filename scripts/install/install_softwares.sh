@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/03 15:41:28 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/11 15:40:52 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/14 15:25:26 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ cd build
              --target=$LFS_TGT   \
              --disable-nls       \
              --disable-werror
-make
+make -j$(nproc)
 make install
 cd ../..
 rm -rf binutils-2.38
@@ -69,7 +69,7 @@ cd       build
     --disable-libstdcxx       \
     --enable-languages=c,c++
 
-make
+make -j$(nproc)
 make install
 cd ..
 
@@ -115,7 +115,7 @@ echo "rootsbindir=/usr/sbin" > configparms
       --enable-kernel=3.2                \
       --with-headers=$LFS/usr/include    \
       libc_cv_slibdir=/usr/lib
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
 echo 'int main(){}' > dummy.c
@@ -140,7 +140,7 @@ cd build
     --disable-nls                   \
     --disable-libstdcxx-pch         \
     --with-gxx-include-dir=/tools/$LFS_TGT/include/c++/11.2.0
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 cd ../../
 rm -rf gcc-11.2.0

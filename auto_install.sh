@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/14 15:22:20 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/14 16:16:12 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,9 +27,8 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-debug=${1:-"debug"}
-jumpto $debug
-debug:
+# debug=${1:-"debug"}
+# jumpto $debug
 
 # Update Host system
 sudo apt-get update -y
@@ -77,8 +76,6 @@ then
     rm -rf /etc/sudoers
     mv /etc/sudoers.bak /etc/sudoers
 fi
-
-exit 1
 
 # Check if SDB disk is valid
 lsblk /dev/sdb
@@ -165,6 +162,7 @@ case $(uname -m) in
   x86_64) chown -v lfs $LFS/lib64 ;;
 esac
 
+
 # Init LFS Shell
 cp -f ./scripts/lfs/init-lfs-shell.sh /home/lfs/init-lfs-shell.sh
 cp -f ./scripts/lfs/check-lfs-initialisation.sh /home/lfs/check-lfs-initialisation.sh
@@ -193,9 +191,12 @@ echo "lfs      ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
 export LFS=/mnt/lfs
 cp -f ./scripts/install/* $LFS/sources/
+exit 1
 su - lfs << EOF
 cd $LFS/sources/
 printf 'toor\n' | sudo -S sh install_softwares.sh
 printf 'toor\n' | sudo -S sh install_softwares_02.sh
 printf 'toor\n' | sudo -S sh install_softwares_03.sh
 EOF
+
+debug:
