@@ -29,6 +29,25 @@ sudo rm -rf /bin/sh
 sudo ln -s /usr/bin/bash /bin/sh
 sudo apt-get install apt-file automake build-essential git liblocale-msgfmt-perl locales-all parted bison make patch texinfo gawk vim g++ bash gzip binutils findutils gawk gcc libc6 grep gzip m4 make patch perl sed tar texinfo xz-utils bison curl libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf --fix-missing -y
 
+# Check LFS Script version-check
+sh ./scripts/check/version-check.sh
+sh ./scripts/check/version-check.sh | grep "introuvable"
+res=$?
+
+if [ $res != 1 ]
+then
+    echo "Error: install packages requiered by LFS..."
+    exit 1
+fi
+sh ./scripts/check/version-check.sh | grep "échouée"
+res=$?
+
+if [ $res != 1 ]
+then
+    echo "Error: install packages requiered by LFS..."
+    exit 1
+fi
+
 # Check if SDB disk is valid
 lsblk /dev/sdb
 var=$?
@@ -51,6 +70,10 @@ cd ~
 export LFS=/mnt/lfs
 mkdir -v $LFS
 mount -v -t ext4 /dev/sdb4 $LFS
+
+# Restore LFS Default                                                                              
+rm -vrf /mnt/lfs/*
+
 swapoff /dev/sdb3
 mkswap /dev/sdb3
 swapon /dev/sdb3
