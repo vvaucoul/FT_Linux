@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/14 18:18:36 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/14 19:11:41 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -191,7 +191,7 @@ debug:
 
 export LFS=/mnt/lfs
 cp -f ./scripts/install/* $LFS/sources/
-sudo su - lfs << EOF
+su - lfs << EOF
 sudo su
 cd $LFS/sources/
 sh install_softwares.sh
