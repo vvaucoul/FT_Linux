@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/14 13:22:51 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/14 13:27:56 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -180,3 +180,9 @@ cp /etc/sudoers /etc/sudoers.bak
 echo "lfs      ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
 debug:
+
+export LFS=/mnt/lfs
+cp -f ./scripts/install/* $LFS/sources/
+su - lfs << EOF
+cd $LFS/sources/
+EOF
