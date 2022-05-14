@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/14 13:48:56 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/14 15:22:20 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ fi
 
 debug=${1:-"debug"}
 jumpto $debug
+debug:
 
 # Update Host system
 sudo apt-get update -y
@@ -67,6 +68,17 @@ then
     echo "Error: install packages requiered by LFS..."
     exit 1
 fi
+
+# Reset Sudoers File
+ls /etc/sudoers.bak
+res=$?
+if [ $res == 0 ]
+then
+    rm -rf /etc/sudoers
+    mv /etc/sudoers.bak /etc/sudoers
+fi
+
+exit 1
 
 # Check if SDB disk is valid
 lsblk /dev/sdb
@@ -179,11 +191,11 @@ chmod 755 /etc/sudoers
 cp /etc/sudoers /etc/sudoers.bak
 echo "lfs      ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
-debug:
-
 export LFS=/mnt/lfs
 cp -f ./scripts/install/* $LFS/sources/
 su - lfs << EOF
 cd $LFS/sources/
 printf 'toor\n' | sudo -S sh install_softwares.sh
+printf 'toor\n' | sudo -S sh install_softwares_02.sh
+printf 'toor\n' | sudo -S sh install_softwares_03.sh
 EOF
