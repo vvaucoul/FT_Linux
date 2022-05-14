@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/14 16:16:12 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/14 18:09:25 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,8 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-# debug=${1:-"debug"}
-# jumpto $debug
+debug=${1:-"debug"}
+jumpto $debug
 
 # Update Host system
 sudo apt-get update -y
@@ -113,7 +113,6 @@ chmod -v a+wt $LFS/sources
 lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sdb
 sleep 1
 
-
 curl https://raw.githubusercontent.com/vvaucoul/FT_Linux/main/wget-list > wget-list
 curl https://raw.githubusercontent.com/vvaucoul/FT_Linux/main/md5sums > md5sums
 
@@ -126,7 +125,7 @@ pushd $LFS/sources
 md5sum -c md5sums
 popd
 
-
+# Check archives
 sh ./scripts/check/check_archives.sh
 sh ./scripts/check/check_archives.sh | grep "Not Found"
 var=$?
@@ -187,16 +186,43 @@ rm -rf version-check.sh
 # Creation du systeme temporaire
 chmod 755 /etc/sudoers
 cp /etc/sudoers /etc/sudoers.bak
-echo "lfs      ALL=(ALL:ALL) ALL" >> /etc/sudoers
+echo "lfs      ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 export LFS=/mnt/lfs
 cp -f ./scripts/install/* $LFS/sources/
-exit 1
 su - lfs << EOF
+sudo su
 cd $LFS/sources/
-printf 'toor\n' | sudo -S sh install_softwares.sh
-printf 'toor\n' | sudo -S sh install_softwares_02.sh
-printf 'toor\n' | sudo -S sh install_softwares_03.sh
+sh install_softwares.sh
+sh install_softwares_02.sh
+sh install_softwares_03.sh
 EOF
 
+#Creation des outils temporaires suplementaires
+chown -R root:root $LFS/{usr,lib,var,etc,bin,sbin,tools}
+case $(uname -m) in
+  x86_64) chown -R root:root $LFS/lib64 ;;
+esac
+export LFS=/mnt/lfs
+mkdir -pv $LFS/{dev,proc,sys,run}
+mknod -m 600 $LFS/dev/console c 5 1
+mknod -m 666 $LFS/dev/null c 1 3
+
 debug:
+
+# CHROOT
+mount -v --bind /dev $LFS/dev
+mount -v --bind /dev/pts $LFS/dev/pts
+mount -vt proc proc $LFS/proc
+mount -vt sysfs sysfs $LFS/sys
+mount -vt tmpfs tmpfs $LFS/run
+if [ -h $LFS/dev/shm ]; then
+  mkdir -pv $LFS/$(readlink $LFS/dev/shm)
+fi
+
+chroot "$LFS" /usr/bin/env -i   \
+    HOME=/root                  \
+    TERM="$TERM"                \
+    PS1='(lfs chroot) \u:\w\$ ' \
+    PATH=/usr/bin:/usr/sbin     \
+    /bin/bash --login
