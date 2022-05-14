@@ -53,8 +53,7 @@ sudo apt-get autoclean -y </dev/null
 sudo apt-get clean -y </dev/null
 sudo rm -rf /bin/sh
 sudo ln -s /usr/bin/bash /bin/sh
-sudo apt-get install apt-file automake build-essential git liblocale-msgfmt-perl locales-all parted bison make patch texinfo gawk vim g++ bash gzip binutils findutils gawk gcc libc6 grep gzip m4 make patch perl python sed tar texinfo xz-utils bison curl libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf --fix-missing -y
-sudo apt-file update
+sudo apt-get install apt-file automake build-essential git liblocale-msgfmt-perl locales-all parted bison make patch texinfo gawk vim g++ bash gzip binutils findutils gawk gcc libc6 grep gzip m4 make patch perl sed tar texinfo xz-utils bison curl libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf --fix-missing -y
 ```
 
 ### Partitions
@@ -231,16 +230,24 @@ cd $LFS/sources/
 ### Creation des outils temporaires suplementaires
 
 ```bash
+# Revenir au shell root
+exec <&-
+
 chown -R root:root $LFS/{usr,lib,var,etc,bin,sbin,tools}
 case $(uname -m) in
   x86_64) chown -R root:root $LFS/lib64 ;;
 esac
 
+export LFS=/mnt/lfs
 mkdir -pv $LFS/{dev,proc,sys,run}
 
 mknod -m 600 $LFS/dev/console c 5 1
 mknod -m 666 $LFS/dev/null c 1 3
+```
 
+### Entrer dans le mode 'CHROOT'
+
+```bash
 mount -v --bind /dev $LFS/dev
 
 mount -v --bind /dev/pts $LFS/dev/pts
