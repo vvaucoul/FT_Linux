@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/15 13:47:15 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/15 14:19:21 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,11 +27,10 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-
 debug=${1:-"debug"}
 jumpto $debug
 
-
+debug:
 OPATH=$(pwd)
 printf 'Original Path: '$OPATH'\n'
 sleep 1
@@ -48,8 +47,8 @@ sudo ln -s /usr/bin/bash /bin/sh
 sudo apt-get install apt-file automake build-essential git liblocale-msgfmt-perl locales-all parted bison make patch texinfo gawk vim g++ bash gzip binutils findutils gawk gcc libc6 grep gzip m4 make patch perl sed tar texinfo xz-utils bison curl libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf --fix-missing -y
 
 # Check LFS Script version-check
-sh ./scripts/check/version-check.sh
-sh ./scripts/check/version-check.sh | grep "introuvable"
+sh $OPATH/scripts/check/version-check.sh
+sh $OPATH/scripts/check/version-check.sh | grep "introuvable"
 res=$?
 
 if [ $res != 1 ]
@@ -57,7 +56,7 @@ then
     echo "Error: install packages requiered by LFS..."
     exit 1
 fi
-sh ./scripts/check/version-check.sh | grep "échouée"
+sh $OPATH/scripts/check/version-check.sh | grep "échouée"
 res=$?
 
 if [ $res != 1 ]
@@ -65,7 +64,7 @@ then
     echo "Error: install packages requiered by LFS..."
     exit 1
 fi
-sh ./scripts/check/version-check.sh | grep "not"
+sh $OPATH/scripts/check/version-check.sh | grep "not"
 res=$?
 
 if [ $res != 1 ]
@@ -119,10 +118,18 @@ chmod -v a+wt $LFS/sources
 lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sdb
 sleep 1
 
+# Download Archives
 curl https://raw.githubusercontent.com/vvaucoul/FT_Linux/main/wget-list > wget-list
 curl https://raw.githubusercontent.com/vvaucoul/FT_Linux/main/md5sums > md5sums
 
-wget --input-file=wget-list --continue --directory-prefix=$LFS/sources
+ls $OPATH/archives
+if [ $? == 0 ]
+then
+    rm -rf $OPATH/archives
+fi
+
+wget --input-file=wget-list --continue --directory-prefix=$OPATH/archives
+cp -rf $OPATH/archives/* $LFS/sources/
 cp md5sums $LFS/sources/md5sums
 
 rm -rf ./wget-list ./md5sums
@@ -133,8 +140,8 @@ popd
 
 # Check archives
 cd $OPATH
-sh ./scripts/check/check_archives.sh
-sh ./scripts/check/check_archives.sh | grep "Not Found"
+sh $OPATH/scripts/check/check_archives.sh
+sh $OPATH/scripts/check/check_archives.sh | grep "Not Found" > /dev/null
 var=$?
 
 if [ $var == 0 ]
@@ -168,15 +175,14 @@ case $(uname -m) in
   x86_64) chown -v lfs $LFS/lib64 ;;
 esac
 
+printf "Now, enter in lfs user (su - lfs) and execute the next script...\n"
+
+exit 1
+
 # Init LFS Shell
 cd $OPATH
 cp -f ./scripts/lfs/init-lfs-shell.sh /home/lfs/init-lfs-shell.sh
 cp -f ./scripts/lfs/check-lfs-initialisation.sh /home/lfs/check-lfs-initialisation.sh
-
-debug:
-OPATH=$(pwd)
-printf 'Original Path: '$OPATH'\n'
-sleep 1
 
 su - lfs << EOF
 pwd
@@ -185,6 +191,7 @@ sleep 1
 sudo sh init-lfs-shell.sh
 sleep 1
 sudo sh check-lfs-initialisation.sh
+source .bashrc
 
 echo 'LFS: ' $LFS
 echo 'LFS: ' $LFS_TGT
@@ -194,7 +201,12 @@ EOF
 su - lfs << EOF
 echo 'LFS: ' $LFS
 echo 'LFS: ' $LFS_TGT
+exec <&-
 EOF
+
+echo $USER
+exec <&-
+./auto_install_02.sh
 
 exit 1
 
