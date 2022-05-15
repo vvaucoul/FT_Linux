@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 13:01:39 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/15 12:18:43 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/15 13:44:53 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,5 +27,5 @@ CONFIG_SITE=$LFS/usr/share/config.site
 export LFS LC_ALL LFS_TGT PATH CONFIG_SITE
 EOF
 
-source ~/.bash_profile
+source /home/lfs/.bash_profile
 export MAKEFLAGS='-j4'

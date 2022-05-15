@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/15 13:38:22 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/15 13:47:15 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -168,19 +168,26 @@ case $(uname -m) in
   x86_64) chown -v lfs $LFS/lib64 ;;
 esac
 
-debug:
-OPATH=$(pwd)
-printf 'Original Path: '$OPATH'\n'
-sleep 1
-
 # Init LFS Shell
 cd $OPATH
 cp -f ./scripts/lfs/init-lfs-shell.sh /home/lfs/init-lfs-shell.sh
 cp -f ./scripts/lfs/check-lfs-initialisation.sh /home/lfs/check-lfs-initialisation.sh
 
+debug:
+OPATH=$(pwd)
+printf 'Original Path: '$OPATH'\n'
+sleep 1
+
 su - lfs << EOF
+pwd
+echo $USER
+sleep 1
 sudo sh init-lfs-shell.sh
+sleep 1
 sudo sh check-lfs-initialisation.sh
+
+echo 'LFS: ' $LFS
+echo 'LFS: ' $LFS_TGT
 exec <&-
 EOF
 
