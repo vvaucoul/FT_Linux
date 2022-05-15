@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 13:01:39 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/15 13:44:53 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/15 14:34:45 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,3 +29,5 @@ EOF
 
 source /home/lfs/.bash_profile
 export MAKEFLAGS='-j4'
+
+sh check-lfs-initialisation.sh

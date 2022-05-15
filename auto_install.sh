@@ -6,20 +6,11 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/15 14:23:18 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/15 14:51:52 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Auto install LFS with this script
-
-# TMP
-function jumpto
-{
-    label=$1
-    cmd=$(sed -n "/$label:/{:a;n;p;ba};" $0 | grep -v ':$')
-    eval "$cmd"
-    exit
-}
 
 # Check Root
 if [ "$EUID" -ne 0 ]
@@ -27,13 +18,7 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-debug=${1:-"debug"}
-jumpto $debug
-
-debug:
 OPATH=$(pwd)
-printf 'Original Path: '$OPATH'\n'
-sleep 1
 
 # Update Host system
 sudo apt-get update -y
@@ -173,40 +158,14 @@ case $(uname -m) in
   x86_64) chown -v lfs $LFS/lib64 ;;
 esac
 
-printf "Now, enter in lfs user (su - lfs) and execute the next script...\n"
-
-exit 1
-
-# Init LFS Shell
-cd $OPATH
-cp -f ./scripts/lfs/init-lfs-shell.sh /home/lfs/init-lfs-shell.sh
-cp -f ./scripts/lfs/check-lfs-initialisation.sh /home/lfs/check-lfs-initialisation.sh
-
-su - lfs << EOF
-pwd
-echo $USER
-sleep 1
-sudo sh init-lfs-shell.sh
-sleep 1
-sudo sh check-lfs-initialisation.sh
-source .bashrc
-
-echo 'LFS: ' $LFS
-echo 'LFS: ' $LFS_TGT
-exec <&-
-EOF
-
-su - lfs << EOF
-echo 'LFS: ' $LFS
-echo 'LFS: ' $LFS_TGT
-exec <&-
-EOF
-
-echo $USER
-exec <&-
-./auto_install_02.sh
-
-exit 1
+# Set LFS User Sudo without password
+chmod 755 /etc/sudoers
+cp /etc/sudoers /etc/sudoers.bak
+cat /etc/sudoers | grep "lfs"
+if [ $? != 0 ]
+then
+    echo "lfs ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
+fi
 
 # Check LFS Script version-check
 echo "dash dash/sh boolean false" | debconf-set-selections
@@ -220,44 +179,42 @@ curl http://www.linuxfromscratch.org/lfs/view/stable/chapter02/hostreqs.html | g
 bash version-check.sh | grep not
 rm -rf version-check.sh
 
-# Creation du systeme temporaire
-chmod 755 /etc/sudoers
-cp /etc/sudoers /etc/sudoers.bak
-cat /etc/sudoers | grep "lfs"
-if [ $? != 0 ]
-then
-    echo "lfs ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
-fi
-
+# Init LFS Shell
 cd $OPATH
-pwd
+cp -f ./scripts/lfs/init-lfs-shell.sh /home/lfs/init-lfs-shell.sh
+cp -f ./scripts/lfs/check-lfs-initialisation.sh /home/lfs/check-lfs-initialisation.sh
+chmod 755 /home/lfs/init-lfs-shell.sh
+chmod 755 /home/lfs/check-lfs-initialisation.sh
+
+cp -f ./scripts/auto-install/auto-install-01.sh /home/lfs/auto-install-01.sh
+chmod 755 /home/lfs/auto-install-01.sh
 cp -f ./scripts/install/install_softwares.sh $LFS/sources/install_softwares.sh
 cp -f ./scripts/install/install_softwares_02.sh $LFS/sources/install_softwares_02.sh
 cp -f ./scripts/install/install_softwares_03.sh $LFS/sources/install_softwares_03.sh
 
-printf 'LFS: '$LFS'\n'
-exit
-
-su - lfs << EOF
-env
 export LFS=/mnt/lfs
-export LFS_TGT=$(uname -m)-lfs-linux-gnu
-cd $LFS/sources/
-pwd
-echo $LFS
-echo $LFS_TGT
-sleep 8
-sudo su << EOF2
-cd $LFS/sources/
-pwd
-env
-sh install_softwares.sh
-EOF2
-EOF
-# sh install_softwares_02.sh
-# sh install_softwares_03.sh
+chmod 755 $LFS/sources/install_softwares.sh $LFS/sources/install_softwares_02.sh $LFS/sources/install_softwares_03.sh
 
-exit 1
+printf "\n\nNow, enter in lfs user (su - lfs with password: 'toor')\n\
+and execute the script: 'init-lfs-shell && check-lfs-initialisation' in root of lfs shell...\n\
+Execute the script 'init-lfs-shell && check-lfs-initialisation' with sudo su as lfs user\n\
+Then, launch the script auto-install-01 with sudo su as lfs user !\n\n\
+Commands to do:\n
+\t- su - lfs
+\t- ./init-lfs-shell
+\t- ./check-lfs-initialisation
+\t- sudo su
+\t- ./init-lfs-shell
+\t- ./check-lfs-initialisation
+\t- ./auto-install-01
+"
+exit 0
+
+
+
+
+
+
 
 #Creation des outils temporaires suplementaires
 chown -R root:root $LFS/{usr,lib,var,etc,bin,sbin,tools}

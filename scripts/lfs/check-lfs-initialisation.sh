@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 13:07:56 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/15 13:43:40 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/15 14:29:19 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,3 +38,5 @@ then
 else
     printf "\e[1;32m\e[1;33m'PATH' found\e[0m\n"
 fi
+
+exec <&-
