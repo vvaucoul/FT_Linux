@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/15 14:19:21 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/15 14:23:18 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -123,15 +123,13 @@ curl https://raw.githubusercontent.com/vvaucoul/FT_Linux/main/wget-list > wget-l
 curl https://raw.githubusercontent.com/vvaucoul/FT_Linux/main/md5sums > md5sums
 
 ls $OPATH/archives
-if [ $? == 0 ]
+if [ $? != 0 ]
 then
-    rm -rf $OPATH/archives
+    wget --input-file=wget-list --continue --directory-prefix=$OPATH/archives
 fi
 
-wget --input-file=wget-list --continue --directory-prefix=$OPATH/archives
 cp -rf $OPATH/archives/* $LFS/sources/
 cp md5sums $LFS/sources/md5sums
-
 rm -rf ./wget-list ./md5sums
 
 pushd $LFS/sources
