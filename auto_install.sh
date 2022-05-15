@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/14 19:49:35 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/15 12:16:02 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,14 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
+
 debug=${1:-"debug"}
 jumpto $debug
+
+
+OPATH=$(pwd)
+printf 'Original Path: '$OPATH'\n'
+sleep 1
 
 # Update Host system
 sudo apt-get update -y
@@ -126,6 +132,7 @@ md5sum -c md5sums
 popd
 
 # Check archives
+cd $OPATH
 sh ./scripts/check/check_archives.sh
 sh ./scripts/check/check_archives.sh | grep "Not Found"
 var=$?
@@ -161,14 +168,33 @@ case $(uname -m) in
   x86_64) chown -v lfs $LFS/lib64 ;;
 esac
 
+debug:
+OPATH=$(pwd)
+printf 'Original Path: '$OPATH'\n'
+export LFS=/mnt/lfs
+printf 'LFS Path: '$LFS'\n'
+sleep 1
+
 # Init LFS Shell
+cd $OPATH
 cp -f ./scripts/lfs/init-lfs-shell.sh /home/lfs/init-lfs-shell.sh
 cp -f ./scripts/lfs/check-lfs-initialisation.sh /home/lfs/check-lfs-initialisation.sh
+
 su - lfs << EOF
-sh init-lfs-shell.sh
-sh check-lfs-initialisation.sh
-exec <&-
+pwd
+ls
+sudo sh init-lfs-shell.sh
+sudo sh check-lfs-initialisation.sh
+
+cat ~/.bashrc
+cat ~/.bash_profile
+
+printf 'LFS : '$LFS'\n'
+printf 'LFS_TGT : '$LFS_TGT'\n'
+
 EOF
+
+exit 1
 
 # Check LFS Script version-check
 echo "dash dash/sh boolean false" | debconf-set-selections
@@ -182,22 +208,30 @@ curl http://www.linuxfromscratch.org/lfs/view/stable/chapter02/hostreqs.html | g
 bash version-check.sh | grep not
 rm -rf version-check.sh
 
-debug:
-
 # Creation du systeme temporaire
 chmod 755 /etc/sudoers
 cp /etc/sudoers /etc/sudoers.bak
 cat /etc/sudoers | grep "lfs"
 if [ $? != 0 ]
 then
-    echo "lfs ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    echo "lfs ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 fi
 
-export LFS=/mnt/lfs
-cp -f ./scripts/install/* $LFS/sources/
+cd $OPATH
+pwd
+cp -f ./scripts/lfs/install_softwares.sh $LFS/sources/install_softwares.sh
+cp -f ./scripts/lfs/install_softwares_02.sh $LFS/sources/install_softwares_02.sh
+cp -f ./scripts/lfs/install_softwares_03.sh $LFS/sources/install_softwares_03.sh
+
 su - lfs << EOF
+env
+export LFS=/mnt/lfs
+cd $LFS/sources/
+pwd
 sudo su << EOF2
 cd $LFS/sources/
+pwd
+env
 sh install_softwares.sh
 EOF2
 EOF
