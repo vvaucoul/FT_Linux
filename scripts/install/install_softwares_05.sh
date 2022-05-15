@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/11 10:56:10 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/13 15:34:07 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/16 00:41:20 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -130,7 +130,7 @@ done
 cp -v zone.tab zone1970.tab iso3166.tab $ZONEINFO
 zic -d $ZONEINFO -p America/New_York
 unset ZONEINFO
-tzselect
+printf '7\n15\n1\n' | tzselect
 ln -sfv /usr/share/zoneinfo/Europe/Paris /etc/localtime
 cat > /etc/ld.so.conf << "EOF"
 # Début de /etc/ld.so.conf
