@@ -58,8 +58,14 @@ sudo apt-get install apt-file automake build-essential git liblocale-msgfmt-perl
 
 ### Partitions
 
-> - sudo su
-> - fdisk /dev/sdb
+```bash
+sudo su
+```
+
+```bash
+fdisk /dev/sdb
+```
+
 
 ```bash
  g
@@ -108,8 +114,8 @@ swapon /dev/sdb3
 mkdir -v $LFS/sources
 chmod -v a+wt $LFS/sources
 
-curl http://fr.linuxfromscratch.org/view/lfs-stable/wget-list > wget-list
-curl http://fr.linuxfromscratch.org/view/lfs-stable/md5sums > md5sums
+curl https://raw.githubusercontent.com/vvaucoul/FT_Linux/main/wget-list > wget-list
+curl https://raw.githubusercontent.com/vvaucoul/FT_Linux/main/md5sums > md5sums
 
 wget --input-file=wget-list --continue --directory-prefix=$LFS/sources
 cp md5sums $LFS/sources/md5sums
@@ -211,13 +217,13 @@ bash version-check.sh | grep not
 
 ### Creation du systeme temporaire
 
-> Avant de lancer les scripts, repassez sur le shell d'origine puis vérifiez que les variables d'environnement 'LFS' et 'LFS_TGT' existent et sont correctement mises dans le shell LFS et root.
+> Avant de lancer les scripts, repassez sur le shell d'origine puis vérifiez que les variables d'environnement 'LFS' et 'LFS_TGT' existent et sont correctement mises dans le shell LFS.
+> Penez à bien executer le shell lfs via l'utilisateur root (sudo su)
     
 ```bash
 chmod 755 /etc/sudoers
 echo "lfs      ALL=(ALL:ALL) ALL" >> /etc/sudoers
 su - lfs
-sudo su
 export LFS=/mnt/lfs
 export MAKEFLAGS='-j4'
 cd $LFS/sources/
