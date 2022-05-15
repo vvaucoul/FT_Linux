@@ -125,33 +125,6 @@ md5sum -c md5sums
 popd
 ```
 
-> Si vous rencontrez une erreur pour le fichier 'mpfr', lancez ce script:
-
-```bash
-wget https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.xz > $LFS/sources/mpfr-4.1.0.tar.xz
-wget https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.xz.asc > $LFS/sources/mpfr-4.1.0.tar.xz.asc
-```
-
-> Si vous rencontrez une erreur pour le fichier 'zlib', lancez ce script:
-
-```bash
-wget https://www.zlib.net/zlib-1.2.12.tar.xz > $LFS/sources/zlib-1.2.12.tar.xz
-wget https://www.zlib.net/zlib-1.2.12.tar.xz.asc > $LFS/sources/zlib-1.2.12.tar.xz.asc
-```
-
-> Si vous n'avez pas l'archive XML::Parser, lancez ce script:
-```bash
-wget https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.46.tar.gz > $LFS/sources/XML-Parser-2.46.tar.gz
-```
-
-> Puis relancez le script suivant:
-
-```bash
-pushd $LFS/sources
-md5sum -c md5sums
-popd
-```
-
 ### Preparations suite...
 
 ```bash
