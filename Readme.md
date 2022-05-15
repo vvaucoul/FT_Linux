@@ -338,13 +338,13 @@ chmod -v 600  /var/log/btmp
 rm -rf /usr/share/{info,man,doc}/*
 find /usr/{lib,libexec} -name \*.la -delete
 rm -rf /tools
-exit
 ```
 
 #### - Sauvegarde (Optionnel)
 > Temps de sauvegarde ~10 minutes
 
 ```bash
+exit
 umount $LFS/dev/pts
 umount $LFS/{sys,proc,run,dev}
 
