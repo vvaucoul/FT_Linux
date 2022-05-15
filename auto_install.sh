@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 11:56:00 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/15 12:16:02 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/15 13:38:22 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -171,8 +171,6 @@ esac
 debug:
 OPATH=$(pwd)
 printf 'Original Path: '$OPATH'\n'
-export LFS=/mnt/lfs
-printf 'LFS Path: '$LFS'\n'
 sleep 1
 
 # Init LFS Shell
@@ -181,17 +179,14 @@ cp -f ./scripts/lfs/init-lfs-shell.sh /home/lfs/init-lfs-shell.sh
 cp -f ./scripts/lfs/check-lfs-initialisation.sh /home/lfs/check-lfs-initialisation.sh
 
 su - lfs << EOF
-pwd
-ls
 sudo sh init-lfs-shell.sh
 sudo sh check-lfs-initialisation.sh
+exec <&-
+EOF
 
-cat ~/.bashrc
-cat ~/.bash_profile
-
-printf 'LFS : '$LFS'\n'
-printf 'LFS_TGT : '$LFS_TGT'\n'
-
+su - lfs << EOF
+echo 'LFS: ' $LFS
+echo 'LFS: ' $LFS_TGT
 EOF
 
 exit 1
@@ -219,15 +214,22 @@ fi
 
 cd $OPATH
 pwd
-cp -f ./scripts/lfs/install_softwares.sh $LFS/sources/install_softwares.sh
-cp -f ./scripts/lfs/install_softwares_02.sh $LFS/sources/install_softwares_02.sh
-cp -f ./scripts/lfs/install_softwares_03.sh $LFS/sources/install_softwares_03.sh
+cp -f ./scripts/install/install_softwares.sh $LFS/sources/install_softwares.sh
+cp -f ./scripts/install/install_softwares_02.sh $LFS/sources/install_softwares_02.sh
+cp -f ./scripts/install/install_softwares_03.sh $LFS/sources/install_softwares_03.sh
+
+printf 'LFS: '$LFS'\n'
+exit
 
 su - lfs << EOF
 env
 export LFS=/mnt/lfs
+export LFS_TGT=$(uname -m)-lfs-linux-gnu
 cd $LFS/sources/
 pwd
+echo $LFS
+echo $LFS_TGT
+sleep 8
 sudo su << EOF2
 cd $LFS/sources/
 pwd
