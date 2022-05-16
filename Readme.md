@@ -18,8 +18,8 @@ Tutoriel de réference: <strong>[LFS](http://fr.linuxfromscratch.org/view/lfs-st
 ### Création de la VM
 
 - Installez un linux en tant que systeme host pour créer notre LFS (Ubuntu, debian, Arch, Fedora, ...)
-- <strong>[SDA]</strong> Espace disque 16GB vdi
-- <strong>[SDB]</strong> Une fois installe, inserrez un second disque d une taille de 32GB qui contiendra notre LFS
+- <strong>[SDA]</strong> Distribution LFS: Espace disque: 32GB vdi
+- <strong>[SDB]</strong> Système Host. Espace disque: 16GB vdi
 
 ### Prérequis
 
@@ -42,7 +42,7 @@ ip address | grep inet
   - IP Guest: Empty
   - Port Guest: 22
 
-> Paquets a installer: 
+### Paquets a installer: 
 
 ```bash
 sudo apt-get update -y
@@ -56,16 +56,21 @@ sudo ln -s /usr/bin/bash /bin/sh
 sudo apt-get install apt-file automake build-essential git liblocale-msgfmt-perl locales-all parted bison make patch texinfo gawk vim g++ bash gzip binutils findutils gawk gcc libc6 grep gzip m4 make patch perl sed tar texinfo xz-utils bison curl libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf --fix-missing -y
 ```
 
-### Partitions
+> Important ! Passez directement en mode root
 
 ```bash
 sudo su
 ```
 
-```bash
-fdisk /dev/sdb
-```
+### Partitions
 
+Deux solutions s'offrent à vous. L'utilisation de l'outil 'Gparted' ou la commande 'fdisk'. Choisissez celle qui vous convient le mieux.
+
+- fdisk:
+
+```bash
+fdisk /dev/sda
+```
 
 ```bash
  g
@@ -78,6 +83,8 @@ fdisk /dev/sdb
  n default default default
  w
 ```
+
+
 
 --------------
 
