@@ -84,7 +84,9 @@ fdisk /dev/sda
  w
 ```
 
+- gparted:
 
+![image](https://user-images.githubusercontent.com/66129673/168699527-246308b2-2d28-4297-a5c0-b57fefe6ffde.png)
 
 --------------
 
