@@ -799,7 +799,7 @@ set default=0
 set timeout=5
 
 insmod ext2
-set root=(hd0,2)
+set root=(hd0,1)
 
 menuentry "GNU/Linux, Linux 5.16.9-vvaucoul" {
         linux   /boot/vmlinuz-5.16.9-vvaucoul root=/dev/sda3 ro
