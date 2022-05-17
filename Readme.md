@@ -1,7 +1,5 @@
 <img
-    width="500"
-    height="500"
-    style="display: block; margin-left: auto; margin-right: auto; width: 50%"
+    style="display: block; margin-left: none; margin-right: none; width: 100%"
     src="https://cdn-icons-png.flaticon.com/512/226/226772.png"
 img/>
 
