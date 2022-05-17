@@ -438,7 +438,7 @@ Lancez ensuite le script:
 
 - <strong>[install_softwares_05.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_05.sh)</strong>
 
-> **_NOTE:_**  Ce script est assez long à s'éxecuter. Vous pouvez retirer les lignes '370 && 525" pour compiler les paquets plus rapidement.
+> Ce script est assez long à s'éxecuter. Vous pouvez retirer les lignes '370 && 525" pour compiler les paquets plus rapidement.
 
 --------------
 
