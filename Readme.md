@@ -391,8 +391,6 @@ Lancez ensuite le script:
 
 ### Nettoyage & sauvegarde du systeme temporaire
 
-
-
 ```bash
 rm -rf /usr/share/{info,man,doc}/*
 find /usr/{lib,libexec} -name \*.la -delete
@@ -436,9 +434,16 @@ grep -l  -e 'libfoo.*deleted' /proc/*/maps |
 
 Avant de lancer le prochain script, pensez à faire une backup de votre VM ! Il se peut que le système host soit corrompu lors de l'installation.
 
-> Lancez le script "install_softwares_05.sh"
+Lancez ensuite le script:
+
+- <strong>[install_softwares_05.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_05.sh)</strong>
+
+> **_NOTE:_**  Ce script est assez long à s'éxecuter. Vous pouvez retirer les lignes '370 && 525" pour compiler les paquets plus rapidement.
+
+--------------
 
 > Si vous souhaitez ne pas déboguer les logiciels systèmes, vous pouvez libérer 2GO en lancant le script suivant: cleanup_softwares.sh
+
 
 ```bash
 rm -rf /tmp/*
