@@ -97,10 +97,10 @@ fdisk /dev/sda
 > - Resultat:
 
     NAME     UUID     FSTYPE     MOUNTPOINT     SIZE
-    sdb                                          32G
-    ├─sdb1                                        1M    # BIOS BOOT
-    ├─sdb2                                        4G    # LINUX SWAP
-    └─sdb3                                     27,8G    # ROOT /
+    sda                                          32G
+    ├─sda1                                        1M    # BIOS BOOT
+    ├─sda2                                        4G    # LINUX SWAP
+    └─sda3                                     27,8G    # ROOT /
 
 ```bash
  sudo mkfs -v -t ext2 /dev/sda1
@@ -415,7 +415,7 @@ tar -cJpf $HOME/lfs-temp-tools-11.1.tar.xz .
 cd $LFS
 rm -rf ./*
 tar -xpf $HOME/lfs-temp-tools-11.1.tar.xz
-mount -v -t ext4 /dev/sdb4 $LFS
+mount -v -t ext4 /dev/sda3 $LFS
 
 mount -v --bind /dev $LFS/dev
 
@@ -731,9 +731,9 @@ printf "\
 # file system  mount-point  type     options             dump  fsck\n\
 #                                                              order\n\
 \n\
-/dev/sdb1      /boot        ext2     defaults            0     0\n\
-/dev/sdb4      /            ext4     defaults            1     1\n\
-/dev/sdb3      swap         swap     pri=1               0     0\n\
+/dev/sda1      /boot        ext2     defaults            0     0\n\
+/dev/sda3      /            ext4     defaults            1     1\n\
+/dev/sda2      swap         swap     pri=1               0     0\n\
 proc           /proc        proc     nosuid,noexec,nodev 0     0\n\
 sysfs          /sys         sysfs    nosuid,noexec,nodev 0     0\n\
 devpts         /dev/pts     devpts   gid=5,mode=620      0     0\n\
@@ -757,7 +757,7 @@ make
 make modules_install
 
 umount /boot
-mount /dev/sdb1 /boot
+mount /dev/sda1 /boot
 mount --bind /boot /mnt/lfs/boot
 
 export LFS=/mnt/lfs
@@ -791,7 +791,7 @@ EOF
 ### Setup GRUB
 
 ```bash
-grub-install /dev/sdb
+grub-install /dev/sda
 
 cat > /boot/grub/grub.cfg << "EOF"
 # Début de /boot/grub/grub.cfg
@@ -802,7 +802,7 @@ insmod ext2
 set root=(hd0,2)
 
 menuentry "GNU/Linux, Linux 5.16.9-vvaucoul" {
-        linux   /boot/vmlinuz-5.16.9-vvaucoul root=/dev/sdb4 ro
+        linux   /boot/vmlinuz-5.16.9-vvaucoul root=/dev/sda3 ro
 }
 EOF
 ```
