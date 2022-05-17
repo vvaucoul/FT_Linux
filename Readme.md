@@ -1,6 +1,16 @@
- <img
+<style>
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+</style>
+
+<img
     width="500"
     height="500"
+    class="center"
     style="margin: 0px; padding: 0px; border: 0px; vertical-align: middle; display: inline-block; width: 500px; height: 500px;"
     src="https://cdn-icons-png.flaticon.com/512/226/226772.png"
 img/>
@@ -254,9 +264,9 @@ cd $LFS/sources/
 
 > Lancez les scripts:
 
-  - ["install_softwares.sh"](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares.sh)
-  - ["install_softwares_02.sh"](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_02.sh)
-  - ["install_softwares_03.sh"](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_03.sh)
+  - <strong>[install_softwares.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares.sh)</strong>
+  - <strong>[install_softwares_02.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_02.sh)</strong>
+  - <strong>[install_softwares_03.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_03.sh)</strong>
 
 ### Creation des outils temporaires suplementaires
 
