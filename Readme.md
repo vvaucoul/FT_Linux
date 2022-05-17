@@ -74,10 +74,8 @@ fdisk /dev/sda
 
 ```bash
  g
- n default default +1M
+ n default default +100M
  t 4
- n default default +200M
- t 2 1
  n default default +4G
  t 3 19
  n default default default
@@ -86,18 +84,21 @@ fdisk /dev/sda
 
 - gparted:
 
+  - [SDA1]: Partition Boot -> 100MB
+  - [SDA2]: Partition Swap -> 4000MB
+  - [SDA3]: Partition Root -> reste
+
 ![image](https://user-images.githubusercontent.com/66129673/168699527-246308b2-2d28-4297-a5c0-b57fefe6ffde.png)
 
 --------------
 
 > - Resultat:
 
-    NAME     UUID   FSTYPE   MOUNTPOINT    SIZE
-    sdb                          							      32G
-    ├─sdb1             							                  1M			# BIOS BOOT
-    ├─sdb2             								              200M			# EFI SYSTEM
-    ├─sdb3             								              4G			# LINUX SWAP
-    └─sdb4             								              27,8G			# ROOT /
+    NAME     UUID     FSTYPE     MOUNTPOINT     SIZE
+    sdb                                          32G
+    ├─sdb1                                        1M    # BIOS BOOT
+    ├─sdb2                                        4G    # LINUX SWAP
+    └─sdb3                                     27,8G    # ROOT /
 
 ```bash
  sudo mkfs -v -t ext2 /dev/sdb2
@@ -105,8 +106,11 @@ fdisk /dev/sda
  sudo mkswap /dev/sdb3
 ```
 
-Verifications:
-> - lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sdb
+- Verifications:
+  
+```bash
+lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sdb
+```
 
 ### Preparations
 
@@ -161,7 +165,11 @@ chown -v lfs $LFS/{usr{,/*},lib,var,etc,bin,sbin,tools}
 case $(uname -m) in
   x86_64) chown -v lfs $LFS/lib64 ;;
 esac
+```
 
+- Edition du mode LFS
+
+```bash
 su - lfs
 
 cat > ~/.bash_profile << "EOF"
@@ -185,22 +193,51 @@ source ~/.bash_profile
 export MAKEFLAGS='-j4'
 
 exec <&-
+```
 
+- Edition du mode ROOT
+
+```bash
+sudo su
+
+cat > ~/.bash_profile << "EOF"
+exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
+EOF
+
+cat > ~/.bashrc << "EOF"
+set +h
+umask 022
+LFS=/mnt/lfs
+LC_ALL=POSIX
+LFS_TGT=$(uname -m)-lfs-linux-gnu
+PATH=/usr/bin
+if [ ! -L /bin ]; then PATH=/bin:$PATH; fi
+PATH=$LFS/tools/bin:$PATH
+CONFIG_SITE=$LFS/usr/share/config.site
+export LFS LC_ALL LFS_TGT PATH CONFIG_SITE
+EOF
+
+source ~/.bash_profile
+export MAKEFLAGS='-j4'
+
+exec <&-
+```
+
+```bash
 echo "dash dash/sh boolean false" | debconf-set-selections
 DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
 apt-get install -y gawk
 apt-get install -y bison
 apt-get install -y build-essential
 apt-get update && apt-get upgrade -y
-
 curl http://www.linuxfromscratch.org/lfs/view/stable/chapter02/hostreqs.html | grep -A53 "# Simple script to list version numbers of critical development tools" | sed 's:</code>::g' | sed 's:&gt;:>:g' | sed 's:&lt;:<:g' | sed 's:&amp;:\&:g' | sed 's:failed:not OK:g' > version-check.sh
 bash version-check.sh | grep not
 ```
 
 ### Creation du systeme temporaire
 
-> Avant de lancer les scripts, repassez sur le shell d'origine puis vérifiez que les variables d'environnement 'LFS' et 'LFS_TGT' existent et sont correctement mises dans le shell LFS.
-> Penez à bien executer le shell lfs via l'utilisateur root (sudo su)
+> Avant de lancer ces scripts, repassez sur le shell d'origine puis vérifiez que les variables d'environnement 'LFS' et 'LFS_TGT' existent et sont correctement mises dans le shell LFS & ROOT.
+> Pensez à bien executer le shell lfs via l'utilisateur root (sudo su)
     
 ```bash
 chmod 755 /etc/sudoers
@@ -210,6 +247,8 @@ export LFS=/mnt/lfs
 export MAKEFLAGS='-j4'
 cd $LFS/sources/
 ```
+
+- Avant de lancer ces scripts, vous pouvez lancer le script check-lfs-initialisation.sh pour vérifier si toute les variables ont bien été initialisées. Sinon, les paquets qui seront installés vont écraser ceux sur lesquels se trouve votre distribution HOST.
 
 > Lancez le script "install_softwares.sh"
 > Lancez le script "install_softwares_02.sh"

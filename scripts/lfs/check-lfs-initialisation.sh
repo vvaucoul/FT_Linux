@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 13:07:56 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/15 14:29:19 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/17 02:02:41 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ function error {
     printf "\e[1;31m\e[1;33mWarning: $1\e[0m\n"
 }
 
-cat ~/.bashrc | grep "LFS" > /dev/null
+echo $LFS | grep "/mnt/lfs" > /dev/null
 res=$?
 if [ $res != 0 ]
 then
@@ -22,7 +22,7 @@ then
 else
     printf "\e[1;32m\e[1;33m'LFS' found\e[0m\n"
 fi
-cat ~/.bashrc | grep "LFS_TGT" > /dev/null
+echo $LFS_TGT | grep "x86_64-lfs-linux-gnu" > /dev/null
 res=$?
 if [ $res != 0 ]
 then
@@ -30,7 +30,7 @@ then
 else
     printf "\e[1;32m\e[1;33m'LFS_TGT' found\e[0m\n"
 fi
-cat ~/.bashrc | grep "bin" > /dev/null
+echo $PATH | grep "bin" > /dev/null
 res=$?
 if [ $res != 0 ]
 then
