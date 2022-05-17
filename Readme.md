@@ -1,5 +1,6 @@
 <center>
 <img
+    align="center
     style="display: block; margin-left: none; margin-right: none; width: 75%"
     src="https://cdn-icons-png.flaticon.com/512/226/226772.png"
 img/>
