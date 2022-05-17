@@ -101,15 +101,15 @@ fdisk /dev/sda
     └─sdb3                                     27,8G    # ROOT /
 
 ```bash
- sudo mkfs -v -t ext2 /dev/sdb2
- sudo mkfs -v -t ext4 /dev/sdb4
- sudo mkswap /dev/sdb3
+ sudo mkfs -v -t ext2 /dev/sda1
+ sudo mkfs -v -t ext4 /dev/sda3
+ sudo mkswap /dev/sda2
 ```
 
 - Verifications:
   
 ```bash
-lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sdb
+lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sda
 ```
 
 ### Preparations
@@ -118,11 +118,11 @@ lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sdb
 cd
 export LFS=/mnt/lfs
 mkdir -v $LFS
-mount -v -t ext4 /dev/sdb4 $LFS
+mount -v -t ext4 /dev/sda3 $LFS
 
-swapoff /dev/sdb3
-mkswap /dev/sdb3
-swapon /dev/sdb3
+swapoff /dev/sda2
+mkswap /dev/sda2
+swapon /dev/sda2
 
 mkdir -v $LFS/sources
 chmod -v a+wt $LFS/sources
