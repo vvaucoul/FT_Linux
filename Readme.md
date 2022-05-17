@@ -7,8 +7,6 @@ img/>
 
 # FT_LINUX
 
-------------
-
 Créer sa distribution linux from scratch !
 
 Tutoriel de réference: <strong>[LFS](http://fr.linuxfromscratch.org/view/lfs-stable/ "LFS")</strong>
