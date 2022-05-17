@@ -255,7 +255,7 @@ cd $LFS/sources/
 > Lancez les scripts:
 
   - ["install_softwares.sh"](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares.sh)
-- ["install_softwares_02.sh"](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_02.sh)
+  - ["install_softwares_02.sh"](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_02.sh)
   - ["install_softwares_03.sh"](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_03.sh)
 
 ### Creation des outils temporaires suplementaires
