@@ -123,15 +123,15 @@ cd
 export LFS=/mnt/lfs
 mkdir -v $LFS
 mount -v -t ext4 /dev/sda3 $LFS
+
+swapoff /dev/sda2 
+mkswap /dev/sda2
+swapon /dev/sda2
 ```
 
 - Avant de récupérer les paquets, assurez-vous que le dossier $LFS/sources soit bien vide ! Pour en être sûr, lancez cette commande > 'rm -rvf /mnt/lfs/*'
 
 ```bash
-swapoff /dev/sda2 
-mkswap /dev/sda2
-swapon /dev/sda2
-
 mkdir -v $LFS/sources
 chmod -v a+wt $LFS/sources
 
