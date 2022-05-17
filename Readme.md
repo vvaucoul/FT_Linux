@@ -248,15 +248,15 @@ export MAKEFLAGS='-j4'
 cd $LFS/sources/
 ```
 
-- Avant de lancer ces scripts, vous pouvez lancer le script check-lfs-initialisation.sh pour vérifier si toute les variables ont bien été initialisées. Sinon, les paquets qui seront installés vont écraser ceux sur lesquels se trouve votre distribution HOST.
+- Avant de lancer ces scripts, vous pouvez lancer le script [check-lfs-initialisation.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/lfs/check-lfs-initialisation.sh) pour vérifier si toute les variables ont bien été initialisées. Sinon, les paquets qui seront installés vont écraser ceux sur lesquels se trouve votre distribution HOST.
 
 - Aussi, assurez-vous que le dossier $LFS soit bien vide avant de commencer à compiler les paquets ! Pour en être sûr, lancez cette commande > 'rm -rvf /mnt/lfs/*'
 
 > Lancez les scripts:
 
-  - "install_softwares.sh"
-  - "install_softwares_02.sh"
-  - "install_softwares_03.sh"
+  - ["install_softwares.sh"](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares.sh)
+- ["install_softwares_02.sh"](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_02.sh)
+  - ["install_softwares_03.sh"](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_03.sh)
 
 ### Creation des outils temporaires suplementaires
 
