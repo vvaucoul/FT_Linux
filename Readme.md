@@ -120,7 +120,7 @@ export LFS=/mnt/lfs
 mkdir -v $LFS
 mount -v -t ext4 /dev/sda3 $LFS
 
-swapoff /dev/sda2
+swapoff /dev/sda2 
 mkswap /dev/sda2
 swapon /dev/sda2
 
@@ -242,13 +242,15 @@ bash version-check.sh | grep not
 ```bash
 chmod 755 /etc/sudoers
 echo "lfs      ALL=(ALL:ALL) ALL" >> /etc/sudoers
-su - lfs
+sudo su - lfs
 export LFS=/mnt/lfs
 export MAKEFLAGS='-j4'
 cd $LFS/sources/
 ```
 
 - Avant de lancer ces scripts, vous pouvez lancer le script check-lfs-initialisation.sh pour vérifier si toute les variables ont bien été initialisées. Sinon, les paquets qui seront installés vont écraser ceux sur lesquels se trouve votre distribution HOST.
+
+- Aussi, assurez-vous que le dossier $LFS soit bien vide avant de commencer à compiler les paquets ! Pour en être sûr, lancez cette commande > 'rm -rvf /mnt/lfs/*'
 
 > Lancez le script "install_softwares.sh"
 > Lancez le script "install_softwares_02.sh"
