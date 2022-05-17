@@ -252,9 +252,11 @@ cd $LFS/sources/
 
 - Aussi, assurez-vous que le dossier $LFS soit bien vide avant de commencer à compiler les paquets ! Pour en être sûr, lancez cette commande > 'rm -rvf /mnt/lfs/*'
 
-> Lancez le script "install_softwares.sh"
-> Lancez le script "install_softwares_02.sh"
-> Lancez le script "install_softwares_03.sh"
+> Lancez les scripts:
+
+  - "install_softwares.sh"
+  - "install_softwares_02.sh"
+  - "install_softwares_03.sh"
 
 ### Creation des outils temporaires suplementaires
 
