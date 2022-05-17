@@ -17,7 +17,7 @@ Tutoriel de réference: <strong>[LFS](http://fr.linuxfromscratch.org/view/lfs-st
 
 ### Création de la VM
 
-- Installez un linux en tant que systeme host pour créer notre LFS (Ubuntu, debian, Arch, Fedora, ...)
+- Installez un linux en tant que systeme host pour créer votre LFS (Ubuntu, debian, Arch, Fedora, ...)
 - <strong>[SDA]</strong> Distribution LFS: Espace disque: 32GB vdi
 - <strong>[SDB]</strong> Système Host. Espace disque: 16GB vdi
 
@@ -42,7 +42,7 @@ ip address | grep inet
   - IP Guest: Empty
   - Port Guest: 22
 
-### Paquets a installer: 
+> Paquets a installer: 
 
 ```bash
 sudo apt-get update -y
@@ -85,8 +85,10 @@ fdisk /dev/sda
 - gparted:
 
   - [SDA1]: Partition Boot -> 100MB
-  - [SDA2]: Partition Swap -> 4000MB
-  - [SDA3]: Partition Root -> reste
+  - [SDA2]: Partition Swap -> 4000MB 
+  - [SDA3]: Partition Root -> rest
+
+> SWAP: (1 / 8 eme de la taille de la partition root)
 
 ![image](https://user-images.githubusercontent.com/66129673/168699527-246308b2-2d28-4297-a5c0-b57fefe6ffde.png)
 
@@ -112,6 +114,8 @@ fdisk /dev/sda
 lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sda
 ```
 
+--------------
+
 ### Preparations
 
 ```bash
@@ -119,7 +123,11 @@ cd
 export LFS=/mnt/lfs
 mkdir -v $LFS
 mount -v -t ext4 /dev/sda3 $LFS
+```
 
+- Avant de récupérer les paquets, assurez-vous que le dossier $LFS/sources soit bien vide ! Pour en être sûr, lancez cette commande > 'rm -rvf /mnt/lfs/*'
+
+```bash
 swapoff /dev/sda2 
 mkswap /dev/sda2
 swapon /dev/sda2
@@ -236,8 +244,8 @@ bash version-check.sh | grep not
 
 ### Creation du systeme temporaire
 
-> Avant de lancer ces scripts, repassez sur le shell d'origine puis vérifiez que les variables d'environnement 'LFS' et 'LFS_TGT' existent et sont correctement mises dans le shell LFS & ROOT.
-> Pensez à bien executer le shell lfs via l'utilisateur root (sudo su)
+- Avant de lancer ces scripts, repassez sur le shell d'origine puis vérifiez que les variables d'environnement 'LFS' et 'LFS_TGT' existent et sont correctement mises dans le shell LFS & ROOT.
+- Pensez à bien executer le shell lfs via l'utilisateur root (sudo su)
     
 ```bash
 chmod 755 /etc/sudoers
@@ -249,8 +257,6 @@ cd $LFS/sources/
 ```
 
 - Avant de lancer ces scripts, vous pouvez lancer le script [check-lfs-initialisation.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/lfs/check-lfs-initialisation.sh) pour vérifier si toute les variables ont bien été initialisées. Sinon, les paquets qui seront installés vont écraser ceux sur lesquels se trouve votre distribution HOST.
-
-- Aussi, assurez-vous que le dossier $LFS soit bien vide avant de commencer à compiler les paquets ! Pour en être sûr, lancez cette commande > 'rm -rvf /mnt/lfs/*'
 
 > Lancez les scripts:
 
