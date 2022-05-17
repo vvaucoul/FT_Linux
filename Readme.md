@@ -1,17 +1,7 @@
-<style>
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-}
-</style>
-
 <img
     width="500"
     height="500"
-    class="center"
-    style="margin: 0px; padding: 0px; border: 0px; vertical-align: middle; display: inline-block; width: 500px; height: 500px;"
+    style="display: block; margin-left: auto; margin-right: auto; width: 50%"
     src="https://cdn-icons-png.flaticon.com/512/226/226772.png"
 img/>
 
