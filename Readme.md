@@ -386,7 +386,8 @@ chmod -v 664  /var/log/lastlog
 chmod -v 600  /var/log/btmp
 ```
 
-> Lancez le script "install_softwares_04.sh"
+Lancez ensuite le script:
+- <strong>[install_softwares_04.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_04.sh)</strong>
 
 ### Nettoyage & sauvegarde du systeme temporaire
 
