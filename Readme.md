@@ -770,7 +770,12 @@ sudo chroot "$LFS" /usr/bin/env -i          \
     /bin/bash --login
 cd /sources/linux-5.16.9
 
+# For 64 Bits
+cp -iv arch/x86_64/boot/bzImage /boot/vmlinuz-x64-5.16.9-vvaucoul
+
+# For 32 Bits
 cp -iv arch/x86/boot/bzImage /boot/vmlinuz-5.16.9-vvaucoul
+
 cp -iv System.map /boot/System.map-5.16.9
 cp -iv .config /boot/config-5.16.9
 install -d /usr/share/doc/linux-5.16.9
