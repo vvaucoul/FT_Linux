@@ -818,6 +818,7 @@ EOF
 > fdisk /dev/sda
 > - t 1 4
 > - w
+> 
 > puis repassez en chroot LFS et relancez l'installation de grub.
 
 ### Finalisations
