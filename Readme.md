@@ -814,6 +814,12 @@ menuentry "GNU/Linux, Linux 5.16.9-vvaucoul" {
 EOF
 ```
 
+> Si vous obtenez une erreur lors de l'installation de grub, repassez en mode root et exécutez la commande suivante :
+> fdisk /dev/sda
+> - t 1 4
+> - w
+> puis repassez en chroot LFS et relancez l'installation de grub.
+
 ### Finalisations
 
 ```bash
