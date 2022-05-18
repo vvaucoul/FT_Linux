@@ -800,6 +800,21 @@ EOF
 ```bash
 grub-install /dev/sda
 
+# For 64 Bits
+cat > /boot/grub/grub.cfg << "EOF"
+# Début de /boot/grub/grub.cfg
+set default=0
+set timeout=5
+
+insmod ext2
+set root=(hd0,1)
+
+menuentry "GNU/Linux, Linux 5.16.9-vvaucoul" {
+        linux   /boot/vmlinuz-x64-5.16.9-vvaucoul root=/dev/sda3 ro
+}
+EOF
+
+# For 32 Bits
 cat > /boot/grub/grub.cfg << "EOF"
 # Début de /boot/grub/grub.cfg
 set default=0
