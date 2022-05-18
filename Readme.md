@@ -66,6 +66,13 @@ sudo su
 
 Deux solutions s'offrent à vous. L'utilisation de l'outil 'Gparted' ou la commande 'fdisk'. Choisissez celle qui vous convient le mieux.
 
+Si vous reprenez de zéro avec un LFS partiellement effectué, lancez la commande suivante:
+
+```bash
+wipefs -a /dev/sda
+```
+
+
 - fdisk:
 
 ```bash
@@ -73,13 +80,13 @@ fdisk /dev/sda
 ```
 
 ```bash
- g
- n default default +100M
- t 4
- n default default +4G
- t 3 19
- n default default default
- w
+g
+n default default +100M
+t 4
+n default default +4G
+t 2 19
+n default default default
+w
 ```
 
 - gparted:
@@ -94,14 +101,6 @@ fdisk /dev/sda
 
 --------------
 
-> - Resultat:
-
-    NAME     UUID     FSTYPE     MOUNTPOINT     SIZE
-    sda                                          32G
-    ├─sda1                                        1M    # BIOS BOOT
-    ├─sda2                                        4G    # LINUX SWAP
-    └─sda3                                     27,8G    # ROOT /
-
 ```bash
  sudo mkfs -v -t ext2 /dev/sda1
  sudo mkfs -v -t ext4 /dev/sda3
@@ -113,6 +112,14 @@ fdisk /dev/sda
 ```bash
 lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sda
 ```
+
+> - Resultat:
+
+    NAME   UUID                                 FSTYPE MOUNTPOINT  SIZE
+    sda                                                             32G
+    ├─sda1 5e75b741-c5e3-4ac9-88a8-9ccc05856e0c ext2               100M # BOOT
+    ├─sda2 520b9f4b-aadd-42df-aa43-cca4987df169 swap                 4G # SWAP
+    └─sda3 eaa882b4-466e-46c5-8c19-75993770dc8f ext4              27,9G # ROOT
 
 --------------
 
