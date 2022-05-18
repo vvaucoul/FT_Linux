@@ -756,6 +756,8 @@ make menuconfig
 make
 make modules_install
 
+# Revenir au Shell root
+exec <&-
 umount /boot
 mount /dev/sda1 /boot
 mount --bind /boot /mnt/lfs/boot

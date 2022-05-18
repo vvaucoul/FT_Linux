@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/11 10:56:10 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/16 00:41:20 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/17 18:46:05 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -494,7 +494,7 @@ grpconv
 mkdir -p /etc/default
 useradd -D --gid 999
 sed -i '/MAIL/s/yes/no/' /etc/default/useradd
-passwd root
+#passwd root
 cd ..
 rm -rf shadow-4.11.1
 
