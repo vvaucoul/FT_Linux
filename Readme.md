@@ -452,6 +452,10 @@ Lancez ensuite le script:
 
 - <strong>[install_softwares_05.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_05.sh)</strong>
 
+Une fois fini, via le nouveau bash installé, rendez vous dans le dossier /sources et executez le script suivant: 
+
+- <strong>[install_softwares_06.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_06.sh)</strong>
+
 > Ce script met beaucoup de temps pour se finir.
 > Pour savoir ou vous en êtes dans le processus, "GCC", référez-vous au document : [GCC-GNU-TEST-RESULTS](https://gcc.gnu.org/pipermail/gcc-testresults/) (archive gzip'd text file)
 
