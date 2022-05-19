@@ -772,6 +772,11 @@ make mrproper
 make defconfig
 make menuconfig
 # Ajoutez votre login
+```
+
+Avant de compiler le kernel linux, pensez bien à vérifier que tout ce qui est listé dans le fichier [kernel-fonctionnalities](https://github.com/vvaucoul/FT_Linux/blob/main/kernel-fonctionnalities) est bien activé et désactivé ! Sinon, il se peut que votre système ne boot pas.
+
+```bash
 make
 make modules_install
 
