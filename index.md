@@ -1,6 +1,6 @@
 <center>
 <img
-    style="display: block; margin-left: none; margin-right: none; width: 100%"
+    style="display: block; margin-left: none; margin-right: none; width: 75%"
     src="https://cdn-icons-png.flaticon.com/512/226/226772.png"
 img/>
 </center>
@@ -66,6 +66,9 @@ sudo su
 
 Deux solutions s'offrent à vous. L'utilisation de l'outil 'Gparted' ou la commande 'fdisk'. Choisissez celle qui vous convient le mieux.
 
+> ⚠️ Attention: Si vous utilisez Gparted, vous devez utiliser le mode 'MBR' pour que les partitions soient correctement créées. Par défaut, Gparted utilise le mode 'GPT'.
+> Si vous restez en mode 'GPT', il sera impossible d'installer grub.
+
 Si vous reprenez de zéro avec un LFS partiellement effectué, lancez la commande suivante:
 
 ```bash
@@ -91,9 +94,9 @@ w
 
 - gparted:
 
-  - [SDA1]: Partition Boot -> 100MB
-  - [SDA2]: Partition Swap -> 4000MB 
-  - [SDA3]: Partition Root -> rest
+  - <strong>[SDA1]</strong>: Partition Boot -> 100MB
+  - <strong>[SDA2]</strong>: Partition Swap -> 4000MB 
+  - <strong>[SDA3]</strong>: Partition Root -> rest
 
 > SWAP: (1 / 8 eme de la taille de la partition root)
 
@@ -123,7 +126,7 @@ lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sda
 
 --------------
 
-### Preparations
+### Préparations
 
 ```bash
 cd
@@ -136,7 +139,7 @@ mkswap /dev/sda2
 swapon /dev/sda2
 ```
 
-- Avant de récupérer les paquets, assurez-vous que le dossier $LFS/sources soit bien vide ! Pour en être sûr, lancez cette commande > 'rm -rvf /mnt/lfs/*'
+- Avant de récupérer les paquets, assurez-vous que le dossier $LFS/ soit bien vide ! Pour en être sûr, lancez cette commande > 'rm -rvf /mnt/lfs/*'
 
 ```bash
 mkdir -v $LFS/sources
@@ -153,7 +156,7 @@ md5sum -c md5sums
 popd
 ```
 
-### Preparations suite...
+### Préparations suite...
 
 ```bash
 mkdir -v $LFS/tools
@@ -249,7 +252,7 @@ curl http://www.linuxfromscratch.org/lfs/view/stable/chapter02/hostreqs.html | g
 bash version-check.sh | grep not
 ```
 
-### Creation du systeme temporaire
+### Création du système temporaire
 
 - Avant de lancer ces scripts, repassez sur le shell d'origine puis vérifiez que les variables d'environnement 'LFS' et 'LFS_TGT' existent et sont correctement mises dans le shell LFS & ROOT.
 - Pensez à bien executer le shell lfs via l'utilisateur root (sudo su)
@@ -263,9 +266,11 @@ export MAKEFLAGS='-j4'
 cd $LFS/sources/
 ```
 
-- Avant de lancer ces scripts, vous pouvez lancer le script [check-lfs-initialisation.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/lfs/check-lfs-initialisation.sh) pour vérifier si toute les variables ont bien été initialisées. Sinon, les paquets qui seront installés vont écraser ceux sur lesquels se trouve votre distribution HOST.
+- Avant de lancer ces scripts, vous pouvez lancer le script [check-lfs-initialisation.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/lfs/check-lfs-initialisation.sh) pour vérifier si toute les variables ont bien été initialisées. Sinon, les paquets qui seront installés vont écraser ceux qui se trouvent sur votre distribution HOST.
 
 > Lancez les scripts:
+
+> ⚠️ Attention: L'installation des paquets peut être très long. Pour connaitre le temps d'installation de tous les paquets, utilisez le script [get-time.sh](https://github.com/vvaucoul/FT_Linux/blob/main/get-time.sh) en indiquant le temps de compilation du premier paquet, binutils...
 
   - <strong>[install_softwares.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares.sh)</strong>
   - <strong>[install_softwares_02.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_02.sh)</strong>
@@ -445,7 +450,7 @@ Lancez ensuite le script:
 
 - <strong>[install_softwares_05.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_05.sh)</strong>
 
-> Ce script est assez long à s'éxecuter. Vous pouvez retirer les lignes '370 && 525" pour compiler les paquets plus rapidement.
+> Ce script met beaucoup de temps pour se finir.
 
 --------------
 
