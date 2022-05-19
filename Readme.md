@@ -66,7 +66,7 @@ sudo su
 
 Deux solutions s'offrent à vous. L'utilisation de l'outil 'Gparted' ou la commande 'fdisk'. Choisissez celle qui vous convient le mieux.
 
-> /!\ Attention: Si vous utilisez Gparted, vous devez utiliser le mode 'MBR' pour que les partitions soient correctement créées. Par défaut, Gparted utilise le mode 'GPT'.
+> ⚠️ Attention: Si vous utilisez Gparted, vous devez utiliser le mode 'MBR' pour que les partitions soient correctement créées. Par défaut, Gparted utilise le mode 'GPT'.
 > Si vous restez en mode 'GPT', il sera impossible d'installer grub.
 
 Si vous reprenez de zéro avec un LFS partiellement effectué, lancez la commande suivante:
