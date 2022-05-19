@@ -270,6 +270,8 @@ cd $LFS/sources/
 
 > Lancez les scripts:
 
+> ⚠️ Attention: L'installation des paquets peut être très long. Pour connaitre le temps d'installation de tous les paquets, utilisez le script [get-time.sh](https://github.com/vvaucoul/FT_Linux/blob/main/get-time.sh) en indiquant le temps de compilation du premier paquet, binutils...
+
   - <strong>[install_softwares.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares.sh)</strong>
   - <strong>[install_softwares_02.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_02.sh)</strong>
   - <strong>[install_softwares_03.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_03.sh)</strong>
