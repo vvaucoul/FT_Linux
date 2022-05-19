@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   compil-calculator.c                                :+:      :+:    :+:   */
+/*   compile-calculator.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 14:36:09 by vvaucoul          #+#    #+#             */
-/*   Updated: 2022/05/19 15:38:11 by vvaucoul         ###   ########.fr       */
+/*   Updated: 2022/05/19 15:51:11 by vvaucoul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ float tttime = 0.0f;
 static int display_help(void)
 {
     printf("Usage: ./compil-calculator [TIME-REFERENCE]\n");
-    printf("\tTIME-REFERENCE: the time to compile the package 'binutils' pass1 (in minutes)\n\n");
+    printf("\tTIME-REFERENCE: the time to compile the package 'binutils' pass1 (float in minutes)\n\n");
     printf("\t-h: display this help\n");
     printf("\t-v: display version\n");
     return (0);
@@ -60,7 +60,7 @@ static int is_digit(char *str)
     i = 0;
     while (str[i])
     {
-        if (str[i] < '0' || str[i] > '9')
+        if ((str[i] < '0' || str[i] > '9') && str[i] != '.')
             return (0);
         i++;
     }
@@ -215,12 +215,12 @@ static int init_sbu(PT *p)
     insert_sbu(p, "Sysvinit-3.01", 0.1, 1, 5);
 }
 
-static inline float calculate_sbu(float sbu, size_t time)
+static inline float calculate_sbu(float sbu, float time)
 {
-    return (sbu * (float)time);
+    return (sbu * time);
 }
 
-static void display_sbu(PT *p, size_t pass, size_t time)
+static void display_sbu(PT *p, size_t pass, float time)
 {
     printf(COLOR_CYAN BOLD "------------------- PASS: [%zu] -------------------\n\n" COLOR_RESET, pass);
 
@@ -253,7 +253,7 @@ int main(int argc, char **argv)
     {
         if (is_digit(argv[1]) == 0)
             return (display_help());
-        size_t time = atoi(argv[1]);
+        float time = atof(argv[1]);
 
         PT *p;
 
