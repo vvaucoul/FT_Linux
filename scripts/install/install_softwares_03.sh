@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/09 17:53:59 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/11 20:27:11 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/20 13:03:49 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ cd       build
     --enable-shared            \
     --disable-werror           \
     --enable-64-bit-bfd
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 cd ../..
 rm -rf binutils-2.38
@@ -66,7 +66,7 @@ ln -s ../../../libgcc/gthr-posix.h $LFS_TGT/libgcc/gthr-default.h
     --disable-libvtv                               \
     --disable-libstdcxx                            \
     --enable-languages=c,c++
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 ln -sv gcc $LFS/usr/bin/cc
 cd ../..

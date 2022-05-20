@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/09 17:53:59 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/09 18:21:36 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/20 13:03:36 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ cd m4-1.4.19
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 cd ..
 rm -rf m4-1.4.19
@@ -43,7 +43,7 @@ popd
             --without-normal             \
             --disable-stripping          \
             --enable-widec
-make
+make -j$(nproc)
 make DESTDIR=$LFS TIC_PATH=$(pwd)/build/progs/tic install
 echo "INPUT(-lncursesw)" > $LFS/usr/lib/libncurses.so
 cd ..
@@ -57,7 +57,7 @@ cd bash-5.1.16
             --build=$(support/config.guess) \
             --host=$LFS_TGT                 \
             --without-bash-malloc
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 ln -sv bash $LFS/bin/sh
 cd ..
@@ -72,7 +72,7 @@ cd coreutils-9.0
             --build=$(build-aux/config.guess) \
             --enable-install-program=hostname \
             --enable-no-install-program=kill,uptime
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 mv -v $LFS/usr/bin/chroot              $LFS/usr/sbin
 mkdir -pv $LFS/usr/share/man/man8
@@ -86,7 +86,7 @@ rm -rf coreutils-9.0
 tar -xvf diffutils-3.8.tar.xz
 cd diffutils-3.8
 ./configure --prefix=/usr --host=$LFS_TGT
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 cd ..
 rm -rf diffutils-3.8
@@ -101,7 +101,7 @@ pushd build
              --disable-libseccomp \
              --disable-xzlib      \
              --disable-zlib
-make
+make -j$(nproc)
 popd
 ./configure --prefix=/usr --host=$LFS_TGT --build=$(./config.guess)
 make FILE_COMPILE=$(pwd)/build/src/file
@@ -117,7 +117,7 @@ cd findutils-4.9.0
             --localstatedir=/var/lib/locate \
             --host=$LFS_TGT                 \
             --build=$(build-aux/config.guess)
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 cd ..
 rm -rf findutils-4.9.0
@@ -130,7 +130,7 @@ sed -i 's/extras//' Makefile.in
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
-make            
+make -j$(nproc)            
 make DESTDIR=$LFS install
 cd ..
 rm -rf gawk-5.1.1
@@ -141,7 +141,7 @@ tar -xvf grep-3.7.tar.xz
 cd grep-3.7
 ./configure --prefix=/usr   \
             --host=$LFS_TGT
-make            
+make -j$(nproc)            
 make DESTDIR=$LFS install
 cd ..
 rm -rf grep-3.7
@@ -151,7 +151,7 @@ rm -rf grep-3.7
 tar -xvf gzip-1.11.tar.xz
 cd gzip-1.11
 ./configure --prefix=/usr --host=$LFS_TGT
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 cd ..
 rm -rf gzip-1.11
@@ -164,7 +164,7 @@ cd make-4.3
             --without-guile \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 cd ..
 rm -rf make-4.3
@@ -176,7 +176,7 @@ cd patch-2.7.6
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 cd ..
 rm -rf patch-2.7.6
@@ -187,7 +187,7 @@ tar -xvf sed-4.8.tar.xz
 cd sed-4.8
 ./configure --prefix=/usr   \
             --host=$LFS_TGT
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 cd ..
 rm -rf sed-4.8
@@ -199,7 +199,7 @@ cd tar-1.34
 ./configure --prefix=/usr                     \
             --host=$LFS_TGT                   \
             --build=$(build-aux/config.guess)
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 cd ..
 rm -rf tar-1.34
@@ -213,7 +213,7 @@ cd xz-5.2.5
             --build=$(build-aux/config.guess) \
             --disable-static                  \
             --docdir=/usr/share/doc/xz-5.2.5
-make
+make -j$(nproc)
 make DESTDIR=$LFS install
 cd ..
 rm -rf xz-5.2.5

@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/03 15:41:28 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/11 00:53:29 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/20 13:04:09 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ cd       build
     --disable-nls                    \
     --host=$(uname -m)-lfs-linux-gnu \
     --disable-libstdcxx-pch
-make
+make -j$(nproc)
 make install
 cd ../..
 rm -rf gcc-11.2
@@ -34,7 +34,7 @@ rm -rf gcc-11.2
 tar -xvf gettext-0.21.tar.xz
 cd gettext-0.21
 ./configure --disable-shared
-make
+make -j$(nproc)
 cp -v gettext-tools/src/{msgfmt,msgmerge,xgettext} /usr/bin
 cd ..
 rm -rf gettext-0.21
@@ -45,7 +45,7 @@ tar -xvf bison-3.8.2.tar.xz
 cd bison-3.8.2
 ./configure --prefix=/usr \
             --docdir=/usr/share/doc/bison-3.8.2
-make
+make -j$(nproc)
 make install
 cd ..
 rm -rf bison-3.8.2
@@ -63,7 +63,7 @@ sh Configure -des                                        \
              -Dsitearch=/usr/lib/perl5/5.34/site_perl    \
              -Dvendorlib=/usr/lib/perl5/5.34/vendor_perl \
              -Dvendorarch=/usr/lib/perl5/5.34/vendor_perl
-make
+make -j$(nproc)
 make install
 cd ..
 rm -rf perl-5.34.0
@@ -75,7 +75,7 @@ cd Python-3.10.2
 ./configure --prefix=/usr   \
             --enable-shared \
             --without-ensurepip
-make
+make -j$(nproc)
 make install
 cd ..
 rm -rf Python-3.10.2
@@ -87,7 +87,7 @@ cd texinfo-6.8
 sed -e 's/__attribute_nonnull__/__nonnull/' \
     -i gnulib/lib/malloc/dynarray-skeleton.c
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make install
 cd ..
 rm -rf texinfo-6.8
@@ -110,7 +110,7 @@ mkdir -pv /var/lib/hwclock
             --disable-static     \
             --without-python     \
             runstatedir=/run
-make
+make -j$(nproc)
 make install
 cd ..
 rm -rf util-linux-2.37.4

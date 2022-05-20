@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/19 18:26:55 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/19 18:29:30 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/20 13:06:42 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ rm -rf bash-5.1.16
 tar xvf libtool-2.4.6.tar.xz
 cd libtool-2.4.6
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make check
 make install
 rm -fv /usr/lib/libltdl.a
@@ -34,7 +34,7 @@ cd gdbm-1.23
 ./configure --prefix=/usr    \
             --disable-static \
             --enable-libgdbm-compat
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -45,7 +45,7 @@ rm -rf gdbm-1.23
 tar xvf gperf-3.1.tar.gz
 cd gperf-3.1
 ./configure --prefix=/usr --docdir=/usr/share/doc/gperf-3.1
-make
+make -j$(nproc)
 make -j1 check
 make install
 cd ..
@@ -58,7 +58,7 @@ cd expat-2.4.6
 ./configure --prefix=/usr    \
             --disable-static \
             --docdir=/usr/share/doc/expat-2.4.6
-make
+make -j$(nproc)
 make check
 make install
 install -v -m644 doc/*.{html,css} /usr/share/doc/expat-2.4.6
@@ -79,7 +79,7 @@ cd inetutils-2.2
             --disable-rlogin     \
             --disable-rsh        \
             --disable-servers
-make
+make -j$(nproc)
 make check
 make install
 mv -v /usr/{,s}bin/ifconfig
@@ -91,7 +91,7 @@ rm -rf inetutils-2.2
 tar xvf less-590.tar.gz
 cd less-590
 ./configure --prefix=/usr --sysconfdir=/etc
-make
+make -j$(nproc)
 make install
 cd ..
 rm -rf less-590
@@ -117,7 +117,7 @@ sh Configure -des                                         \
              -Dpager="/usr/bin/less -isR"                 \
              -Duseshrplib                                 \
              -Dusethreads
-make
+make -j$(nproc)
 make test
 make install
 unset BUILD_ZLIB BUILD_BZIP2
@@ -129,7 +129,7 @@ rm -rf perl-5.34.0
 tar xvf XML-Parser-2.46.tar.gz
 cd XML-Parser-2.46
 perl Makefile.PL
-make
+make -j$(nproc)
 make test
 make install
 cd ..
@@ -141,7 +141,7 @@ tar xvf intltool-0.51.0.tar.gz
 cd intltool-0.51.0
 sed -i 's:\\\${:\\\$\\{:' intltool-update.in
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make check
 make install
 install -v -Dm644 doc/I18N-HOWTO /usr/share/doc/intltool-0.51.0/I18N-HOWTO
@@ -153,7 +153,7 @@ rm -rf intltool-0.51.0
 tar xvf autoconf-2.71.tar.xz
 cd autoconf-2.71
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -164,7 +164,7 @@ rm -rf autoconf-2.71
 tar xvf automake-1.16.5.tar.xz
 cd automake-1.16.5
 ./configure --prefix=/usr --docdir=/usr/share/doc/automake-1.16.5
-make
+make -j$(nproc)
 make -j4 check
 make install
 cd ..
@@ -179,7 +179,7 @@ cd openssl-3.0.1
          --libdir=lib          \
          shared                \
          zlib-dynamic
-make
+make -j$(nproc)
 make test
 sed -i '/INSTALL_LIBS/s/libcrypto.a libssl.a//' Makefile
 make MANSUFFIX=ssl install
@@ -198,7 +198,7 @@ cd kmod-29
             --with-xz              \
             --with-zstd            \
             --with-zlib
-make
+make -j$(nproc)
 make install
 
 for target in depmod insmod modinfo modprobe rmmod; do
@@ -216,7 +216,7 @@ cd elfutils-0.186
 ./configure --prefix=/usr                \
             --disable-debuginfod         \
             --enable-libdebuginfod=dummy
-make
+make -j$(nproc)
 make check
 make -C libelf install
 install -vm644 config/libelf.pc /usr/lib/pkgconfig
@@ -232,7 +232,7 @@ cd libffi-3.4.2
             --disable-static       \
             --with-gcc-arch=native \
             --disable-exec-static-tramp
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -248,7 +248,7 @@ cd Python-3.10.2
             --with-system-ffi    \
             --with-ensurepip=yes \
             --enable-optimizations
-make
+make -j$(nproc)
 make install
 install -v -dm755 /usr/share/doc/python-3.10.2/html
 
@@ -302,7 +302,7 @@ autoreconf -fiv
 FORCE_UNSAFE_CONFIGURE=1 ./configure \
             --prefix=/usr            \
             --enable-no-install-program=kill,uptime
-make
+make -j$(nproc)
 make install
 mv -v /usr/bin/chroot /usr/sbin
 mv -v /usr/share/man/man1/chroot.1 /usr/share/man/man8/chroot.8
@@ -315,7 +315,7 @@ rm -rf coreutils-9.0
 tar xvf check-0.15.2.tar.gz
 cd check-0.15.2
 ./configure --prefix=/usr --disable-static
-make
+make -j$(nproc)
 make check
 make docdir=/usr/share/doc/check-0.15.2 install
 cd ..
@@ -326,7 +326,7 @@ rm -rf check-0.15.2
 tar xvf diffutils-3.8.tar.xz
 cd diffutils-3.8
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -338,7 +338,7 @@ tar xvf gawk-5.1.1.tar.xz
 cd gawk-5.1.1
 sed -i 's/extras//' Makefile.in
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make check
 make install
 mkdir -pv                                   /usr/share/doc/gawk-5.1.1
@@ -354,7 +354,7 @@ case $(uname -m) in
     i?86)   TIME_T_32_BIT_OK=yes ./configure --prefix=/usr --localstatedir=/var/lib/locate ;;
     x86_64) ./configure --prefix=/usr --localstatedir=/var/lib/locate ;;
 esac
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -378,7 +378,7 @@ cd grub-2.06
             --sysconfdir=/etc      \
             --disable-efiemu       \
             --disable-werror
-make
+make -j$(nproc)
 make install
 mv -v /etc/bash_completion.d/grub /usr/share/bash-completion/completions
 cd ..
@@ -389,7 +389,7 @@ rm -rf grub-2.06
 tar xvf gzip-1.11.tar.xz
 cd gzip-1.11
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -401,7 +401,7 @@ tar xvf iproute2-5.16.0.tar.xz
 cd iproute2-5.16.0
 sed -i /ARPD/d Makefile
 rm -fv man/man8/arpd.8
-make
+make -j$(nproc)
 make SBINDIR=/usr/sbin install
 mkdir -pv             /usr/share/doc/iproute2-5.16.0
 cp -v COPYING README* /usr/share/doc/iproute2-5.16.0
@@ -416,7 +416,7 @@ patch -Np1 -i ../kbd-2.4.0-backspace-1.patch
 sed -i '/RESIZECONS_PROGS=/s/yes/no/' configure
 sed -i 's/resizecons.8 //' docs/man/man8/Makefile.in
 ./configure --prefix=/usr --disable-vlock
-make
+make -j$(nproc)
 make check
 make install
 mkdir -pv           /usr/share/doc/kbd-2.4.0
@@ -429,7 +429,7 @@ rm -rf kbd-2.4.0
 tar xvf libpipeline-1.5.5.tar.gz
 cd libpipeline-1.5.5
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -440,7 +440,7 @@ rm -rf libpipeline-1.5.5
 tar xvf make-4.3.tar.gz
 cd make-4.3
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -451,7 +451,7 @@ rm -rf make-4.3
 tar xvf patch-2.7.6.tar.xz
 cd patch-2.7.6
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -463,7 +463,7 @@ tar xvf tar-1.34.tar.xz
 cd tar-1.34
 FORCE_UNSAFE_CONFIGURE=1  \
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make check
 make install
 make -C doc install-html docdir=/usr/share/doc/tar-1.34
@@ -477,7 +477,7 @@ cd texinfo-6.8
 ./configure --prefix=/usr
 sed -e 's/__attribute_nonnull__/__nonnull/' \
     -i gnulib/lib/malloc/dynarray-skeleton.c
-make
+make -j$(nproc)
 make check
 make install
 make TEXMF=/usr/share/texmf install-tex
@@ -496,7 +496,7 @@ tar xvf vim-8.2.4383.tar.gz
 cd vim-8.2.4383
 echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 "LANG=en_US.UTF-8 make -j1 test" &> vim-test.log
 make install
 ln -sfv vim /usr/bin/vi
@@ -535,7 +535,7 @@ cd eudev-3.2.11
             --sysconfdir=/etc       \
             --enable-manpages       \
             --disable-static
-make
+make -j$(nproc)
 mkdir -pv /usr/lib/udev/rules.d
 mkdir -pv /etc/udev/rules.d
 make check
@@ -560,7 +560,7 @@ cd man-db-2.10.1
             --with-grap=/usr/bin/grap             \
             --with-systemdtmpfilesdir=            \
             --with-systemdsystemunitdir=
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -574,7 +574,7 @@ cd procps-3.3.17/
             --docdir=/usr/share/doc/procps-ng-3.3.17 \
             --disable-static                         \
             --disable-kill
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -600,7 +600,7 @@ cd util-linux-2.37.4
             --without-python     \
             --without-systemd    \
             --without-systemdsystemunitdir
-make
+make -j$(nproc)
 make install
 cd ..
 rm -rf util-linux-2.37.4
@@ -618,7 +618,7 @@ cd       build
              --disable-libuuid       \
              --disable-uuidd         \
              --disable-fsck
-make
+make -j$(nproc)
 make check
 make install           
 rm -fv /usr/lib/{libcom_err,libe2p,libext2fs,libss}.a
@@ -636,7 +636,7 @@ tar xvf sysklogd-1.5.1.tar.gz
 cd sysklogd-1.5.1
 sed -i '/Error loading kernel symbols/{n;n;d}' ksym_mod.c
 sed -i 's/union wait/int/' syslogd.c
-make
+make -j$(nproc)
 make BINDIR=/sbin install
 cat > /etc/syslog.conf << "EOF"
 # Begin /etc/syslog.conf
@@ -659,7 +659,7 @@ rm -rf sysklogd-1.5.1
 tar xvf sysvinit-3.01.tar.xz
 cd sysvinit-3.01
 patch -Np1 -i ../sysvinit-3.01-consolidated-1.patch
-make
+make -j$(nproc)
 make install
 cd ..
 rm -rf sysvinit-3.01

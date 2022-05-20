@@ -6,7 +6,7 @@
 #    By: vvaucoul <vvaucoul@student.42.Fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/11 10:56:10 by vvaucoul          #+#    #+#              #
-#    Updated: 2022/05/19 18:27:08 by vvaucoul         ###   ########.fr        #
+#    Updated: 2022/05/20 13:05:19 by vvaucoul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ echo "rootsbindir=/usr/sbin" > configparms
              --enable-stack-protector=strong          \
              --with-headers=/usr/include              \
              libc_cv_slibdir=/usr/lib
-make
+make -j$(nproc)
 make check
 touch /etc/ld.so.conf
 sed '/test-installation/s@$(PERL)@echo not running@' -i ../Makefile
@@ -152,7 +152,7 @@ rm -rf glibc-2.35
 tar xvf zlib-1.2.12.tar.xz
 cd zlib-1.2.12
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make check
 make install
 rm -fv /usr/lib/libz.a
@@ -168,7 +168,7 @@ sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
 sed -i "s@(PREFIX)/man@(PREFIX)/share/man@g" Makefile
 make -f Makefile-libbz2_so
 make clean
-make
+make -j$(nproc)
 make PREFIX=/usr install
 cp -av libbz2.so.* /usr/lib
 ln -sv libbz2.so.1.0.8 /usr/lib/libbz2.so
@@ -187,7 +187,7 @@ cd xz-5.2.5
 ./configure --prefix=/usr    \
             --disable-static \
             --docdir=/usr/share/doc/xz-5.2.5
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -197,7 +197,7 @@ rm -rf xz-5.2.5
 
 tar xvf zstd-1.5.2.tar.gz
 cd zstd-1.5.2
-make
+make -j$(nproc)
 make check
 make prefix=/usr install
 rm -v /usr/lib/libzstd.a
@@ -209,7 +209,7 @@ rm -rf zstd-1.5.2
 tar xvf file-5.41.tar.gz
 cd file-5.41
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -235,7 +235,7 @@ rm -rf readline-8.1.2
 tar xvf m4-1.4.19.tar.xz
 cd m4-1.4.19
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -246,7 +246,7 @@ rm -rf m4-1.4.19
 tar xvf bc-5.2.2.tar.xz
 cd bc-5.2.2
 CC=gcc ./configure --prefix=/usr -G -O3
-make
+make -j$(nproc)
 make test
 make install
 cd ..
@@ -259,7 +259,7 @@ cd flex-2.6.4
 ./configure --prefix=/usr \
             --docdir=/usr/share/doc/flex-2.6.4 \
             --disable-static
-make
+make -j$(nproc)
 make check
 make install
 ln -fs flex /usr/bin/lex
@@ -276,7 +276,7 @@ cd unix
 ./configure --prefix=/usr           \
             --mandir=/usr/share/man \
             $([ "$(uname -m)" = x86_64 ] && echo --enable-64bit)
-make
+make -j$(nproc)
 
 sed -e "s|$SRCDIR/unix|/usr/lib|" \
     -e "s|$SRCDIR|/usr/include|"  \
@@ -314,7 +314,7 @@ cd expect5.45.4
             --enable-shared         \
             --mandir=/usr/share/man \
             --with-tclinclude=/usr/include
-make
+make -j$(nproc)
 make test
 make install
 ln -svf expect5.45.4/libexpect5.45.4.so /usr/lib
@@ -388,7 +388,7 @@ cd gmp-6.2.1
             --enable-cxx     \
             --disable-static \
             --docdir=/usr/share/doc/gmp-6.2.1
-make
+make -j$(nproc)
 make html
 make check 2>&1 | tee gmp-check-log
 awk '/# PASS:/{total+=$3} ; END{print total}' gmp-check-log
@@ -405,7 +405,7 @@ cd mpfr-4.1.0
             --disable-static     \
             --enable-thread-safe \
             --docdir=/usr/share/doc/mpfr-4.1.0
-make
+make -j$(nproc)
 make html
 make check
 make install
@@ -420,7 +420,7 @@ cd mpc-1.2.1
 ./configure --prefix=/usr    \
             --disable-static \
             --docdir=/usr/share/doc/mpc-1.2.1
-make
+make -j$(nproc)
 make html
 make check
 make install
@@ -436,7 +436,7 @@ cd attr-2.5.1
             --disable-static  \
             --sysconfdir=/etc \
             --docdir=/usr/share/doc/attr-2.5.1
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -449,7 +449,7 @@ cd acl-2.3.1
 ./configure --prefix=/usr         \
             --disable-static      \
             --docdir=/usr/share/doc/acl-2.3.1
-make
+make -j$(nproc)
 make install
 cd ..
 rm -rf acl-2.3.1
@@ -486,7 +486,7 @@ touch /usr/bin/passwd
 ./configure --sysconfdir=/etc \
             --disable-static  \
             --with-group-name-max-length=32
-make
+make -j$(nproc)
 make exec_prefix=/usr install
 make -C man install-man
 pwconv
@@ -520,7 +520,7 @@ cd       build
              --disable-multilib       \
              --disable-bootstrap      \
              --with-system-zlib
-make
+make -j$(nproc)
 ulimit -s 32768
 make -k check
 ../contrib/test_summary
@@ -584,7 +584,7 @@ cd pkg-config-0.29.2
             --with-internal-glib       \
             --disable-host-tool        \
             --docdir=/usr/share/doc/pkg-config-0.29.2
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -604,7 +604,7 @@ cd ncurses-6.3
             --enable-pc-files       \
             --enable-widec          \
             --with-pkg-config-libdir=/usr/lib/pkgconfig
-make            
+make -j$(nproc)            
 make DESTDIR=$PWD/dest install
 install -vm755 dest/usr/lib/libncursesw.so.6.3 /usr/lib
 rm -v  dest/usr/lib/{libncursesw.so.6.3,libncurses++w.a}
@@ -636,7 +636,7 @@ rm -rf ncurses-6.3
 tar xvf sed-4.8.tar.xz
 cd sed-4.8
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make html
 make check
 make install
@@ -650,7 +650,7 @@ rm -rf sed-4.8
 tar xvf psmisc-23.4.tar.xz
 cd psmisc-23.4
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make install
 cd ..
 rm -rf psmisc-23.4
@@ -662,7 +662,7 @@ cd gettext-0.21
 ./configure --prefix=/usr    \
             --disable-static \
             --docdir=/usr/share/doc/gettext-0.21
-make
+make -j$(nproc)
 make check
 make install
 chmod -v 0755 /usr/lib/preloadable_libintl.so            
@@ -674,7 +674,7 @@ rm -rf gettext-0.21
 tar xvf bison-3.8.2.tar.xz
 cd bison-3.8.2
 ./configure --prefix=/usr --docdir=/usr/share/doc/bison-3.8.2
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -685,7 +685,7 @@ rm -rf bison-3.8.2
 tar xvf grep-3.7.tar.xz
 cd grep-3.7
 ./configure --prefix=/usr
-make
+make -j$(nproc)
 make check
 make install
 cd ..
@@ -699,6 +699,6 @@ cd bash-5.1.16
             --docdir=/usr/share/doc/bash-5.1.16 \
             --without-bash-malloc              \
             --with-installed-readline
-make
+make -j$(nproc)
 make install
 exec /usr/bin/bash --login
