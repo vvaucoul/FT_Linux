@@ -468,6 +468,16 @@ sudo su
 cd
 curl https://raw.githubusercontent.com/vvaucoul/FT_Linux/main/wget-additional-list > wget-additional-list
 wget --input-file=wget-additional-list --continue --directory-prefix=$LFS/sources
+
+# Repassez en Chroot
+sudo chroot "$LFS" /usr/bin/env -i          \
+    HOME=/root TERM="$TERM"            \
+    PS1='(lfs chroot) \u:\w\$ '        \
+    PATH=/bin:/usr/bin:/sbin:/usr/sbin \
+    /bin/bash --login
+cd /sources
+
+# Puis lancez le script install-additional-software.sh
 ```
 
 - <strong>[install-additional-softwares.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/additional/install-additional-softwares.sh)</strong>
