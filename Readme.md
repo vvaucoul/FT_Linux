@@ -23,6 +23,8 @@ Tutoriel de réference: <strong>[LFS](http://fr.linuxfromscratch.org/view/lfs-st
 
 > ⚠️ Si vous êtes sur VMWare, pensez à créer un disque virtuel IDE. De plus, il faut impérativement changer dans le bios l'option 'Large Disk Access Mode' pour utiliser 'Other'.
 
+![image](https://user-images.githubusercontent.com/66129673/169803077-419df6b2-d8f6-46e5-bd2b-d02260700c01.png)
+
 ### Prérequis
 
 > SSH:
