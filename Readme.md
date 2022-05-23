@@ -21,6 +21,8 @@ Tutoriel de réference: <strong>[LFS](http://fr.linuxfromscratch.org/view/lfs-st
 - <strong>[SDA]</strong> Distribution LFS: Espace disque: 32GB vdi
 - <strong>[SDB]</strong> Système Host. Espace disque: 16GB vdi
 
+> ⚠️ Si vous êtes sur VMWare, pensez à créer un disque virtuel IDE. De plus, il faut impérativement changer dans le bios l'option 'Large Disk Access Mode' pour utiliser 'Other'.
+
 ### Prérequis
 
 > SSH:
@@ -108,9 +110,9 @@ w
 --------------
 
 ```bash
- sudo mkfs -v -t ext2 /dev/sda1
- sudo mkfs -v -t ext4 /dev/sda3
- sudo mkswap /dev/sda2
+ sudo mkfs -v -t ext2 /dev/sda2
+ sudo mkfs -v -t ext4 /dev/sda4
+ sudo mkswap /dev/sda3
 ```
 
 - Verifications:
@@ -123,9 +125,10 @@ lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sda
 
     NAME   UUID                                 FSTYPE MOUNTPOINT  SIZE
     sda                                                             32G
-    ├─sda1 5e75b741-c5e3-4ac9-88a8-9ccc05856e0c ext2               100M # BOOT
-    ├─sda2 520b9f4b-aadd-42df-aa43-cca4987df169 swap                 4G # SWAP
-    └─sda3 eaa882b4-466e-46c5-8c19-75993770dc8f ext4              27,9G # ROOT
+    |─sda1                                                           1M # BIOS GRUB
+    ├─sda2 5e75b741-c5e3-4ac9-88a8-9ccc05856e0c ext2               100M # BOOT
+    ├─sda3 520b9f4b-aadd-42df-aa43-cca4987df169 swap                 4G # SWAP
+    └─sda4 eaa882b4-466e-46c5-8c19-75993770dc8f ext4              27,9G # ROOT
 
 --------------
 
@@ -135,11 +138,11 @@ lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sda
 cd
 export LFS=/mnt/lfs
 mkdir -v $LFS
-mount -v -t ext4 /dev/sda3 $LFS
+mount -v -t ext4 /dev/sda4 $LFS
 
-swapoff /dev/sda2 
-mkswap /dev/sda2
-swapon /dev/sda2
+swapoff /dev/sda3 
+mkswap /dev/sda3
+swapon /dev/sda3
 ```
 
 - Avant de récupérer les paquets, assurez-vous que le dossier $LFS/ soit bien vide ! Pour en être sûr, lancez cette commande > 'rm -rvf /mnt/lfs/*'
@@ -431,7 +434,7 @@ tar -cJpf $HOME/lfs-temp-tools-11.1.tar.xz .
 cd $LFS
 rm -rf ./*
 tar -xpf $HOME/lfs-temp-tools-11.1.tar.xz
-mount -v -t ext4 /dev/sda3 $LFS
+mount -v -t ext4 /dev/sda4 $LFS
 
 mount -v --bind /dev $LFS/dev
 
@@ -776,9 +779,9 @@ printf "\
 # file system  mount-point  type     options             dump  fsck\n\
 #                                                              order\n\
 \n\
-/dev/sda1      /boot        ext2     defaults            0     0\n\
-/dev/sda3      /            ext4     defaults            1     1\n\
-/dev/sda2      swap         swap     pri=1               0     0\n\
+/dev/sda2      /boot        ext2     defaults            0     0\n\
+/dev/sda4      /            ext4     defaults            1     1\n\
+/dev/sda3      swap         swap     pri=1               0     0\n\
 proc           /proc        proc     nosuid,noexec,nodev 0     0\n\
 sysfs          /sys         sysfs    nosuid,noexec,nodev 0     0\n\
 devpts         /dev/pts     devpts   gid=5,mode=620      0     0\n\
@@ -809,7 +812,7 @@ make modules_install
 # Revenir au Shell root
 exec <&-
 umount /boot
-mount /dev/sda1 /boot
+mount /dev/sda2 /boot
 mount --bind /boot /mnt/lfs/boot
 
 export LFS=/mnt/lfs
@@ -850,41 +853,20 @@ EOF
 ```bash
 grub-install /dev/sda
 
-# For 64 Bits
 cat > /boot/grub/grub.cfg << "EOF"
 # Début de /boot/grub/grub.cfg
 set default=0
 set timeout=5
 
 insmod ext2
-set root=(hd0,1)
+set root=(hd0,gpt2)
 
 menuentry "GNU/Linux, Linux 5.16.9-vvaucoul" {
-        linux   /boot/vmlinuz-x64-5.16.9-vvaucoul root=/dev/sda3 ro
-}
-EOF
-
-# For 32 Bits
-cat > /boot/grub/grub.cfg << "EOF"
-# Début de /boot/grub/grub.cfg
-set default=0
-set timeout=5
-
-insmod ext2
-set root=(hd0,1)
-
-menuentry "GNU/Linux, Linux 5.16.9-vvaucoul" {
-        linux   /boot/vmlinuz-5.16.9-vvaucoul root=/dev/sda3 ro
+        linux   /vmlinuz-x64-5.16.9-vvaucoul root=/dev/sda4 ro
 }
 EOF
 ```
-
-> Si vous obtenez une erreur lors de l'installation de grub, repassez en mode root et exécutez la commande suivante :
-> fdisk /dev/sda
-> - t 1 4
-> - w
-> 
-> puis repassez en chroot LFS et relancez l'installation de grub.
+> Pour une version 32Bits du kernel, enlevez le 'x64' de votre vmlinuz.
 
 ### Finalisations
 
