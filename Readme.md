@@ -84,8 +84,10 @@ fdisk /dev/sda
 
 ```bash
 g
-n default default +100M
+n default default +1M
 t 4
+n default default +200M
+t 2 1
 n default default +4G
 t 2 19
 n default default default
@@ -94,9 +96,10 @@ w
 
 - gparted:
 
-  - <strong>[SDA1]</strong>: Partition Boot -> 100MB
-  - <strong>[SDA2]</strong>: Partition Swap -> 4000MB 
-  - <strong>[SDA3]</strong>: Partition Root -> rest
+  - <strong>[SDA1]</strong>: Partition Bios Boot [grub] -> 1MB
+  - <strong>[SDA2]</strong>: Partition Boot -> 200MB
+  - <strong>[SDA3]</strong>: Partition SWAP -> 4000MB
+  - <strong>[SDA4]</strong>: Partition Root -> reste
 
 > SWAP: (1 / 8 eme de la taille de la partition root)
 
