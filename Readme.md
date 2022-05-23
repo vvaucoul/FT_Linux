@@ -460,6 +460,20 @@ Une fois fini, via le nouveau bash installé, rendez vous dans le dossier /sourc
 
 --------------
 
+> L'installation de ces paquets est optionnel. 
+
+```bash
+# Ouvrez un nouveau terminal ou repassez au shell par défault
+sudo su
+cd
+curl https://raw.githubusercontent.com/vvaucoul/FT_Linux/main/wget-additional-list > wget-additional-list
+wget --input-file=wget-additional-list --continue --directory-prefix=$LFS/sources
+```
+
+- <strong>[install-additional-softwares.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/additional/install-additional-softwares.sh)</strong>
+
+--------------
+
 > Si vous souhaitez ne pas déboguer les logiciels systèmes, vous pouvez libérer 2GO en lancant le script suivant: cleanup_softwares.sh
 
 
