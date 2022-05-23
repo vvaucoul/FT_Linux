@@ -103,7 +103,7 @@ w
 
 > SWAP: (1 / 8 eme de la taille de la partition root)
 
-![image](https://user-images.githubusercontent.com/66129673/168699527-246308b2-2d28-4297-a5c0-b57fefe6ffde.png)
+![image](https://user-images.githubusercontent.com/66129673/169802036-ac7cb232-7953-4e6a-b6a1-aed4dadd2a08.png)
 
 --------------
 
