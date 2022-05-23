@@ -21,6 +21,10 @@ Tutoriel de réference: <strong>[LFS](http://fr.linuxfromscratch.org/view/lfs-st
 - <strong>[SDA]</strong> Distribution LFS: Espace disque: 32GB vdi
 - <strong>[SDB]</strong> Système Host. Espace disque: 16GB vdi
 
+> ⚠️ Si vous êtes sur VMWare, pensez à créer un disque virtuel IDE. De plus, il faut impérativement changer dans le bios l'option 'Large Disk Access Mode' paramétré par défaut sur 'DOS' pour 'Other' !
+
+![image](https://user-images.githubusercontent.com/66129673/169803077-419df6b2-d8f6-46e5-bd2b-d02260700c01.png)
+
 ### Prérequis
 
 > SSH:
@@ -84,8 +88,10 @@ fdisk /dev/sda
 
 ```bash
 g
-n default default +100M
+n default default +1M
 t 4
+n default default +200M
+t 2 1
 n default default +4G
 t 2 19
 n default default default
@@ -94,20 +100,21 @@ w
 
 - gparted:
 
-  - <strong>[SDA1]</strong>: Partition Boot -> 100MB
-  - <strong>[SDA2]</strong>: Partition Swap -> 4000MB 
-  - <strong>[SDA3]</strong>: Partition Root -> rest
+  - <strong>[SDA1]</strong>: Partition Bios Boot [grub] -> 1MB
+  - <strong>[SDA2]</strong>: Partition Boot -> 200MB
+  - <strong>[SDA3]</strong>: Partition SWAP -> 4000MB
+  - <strong>[SDA4]</strong>: Partition Root -> reste
 
 > SWAP: (1 / 8 eme de la taille de la partition root)
 
-![image](https://user-images.githubusercontent.com/66129673/168699527-246308b2-2d28-4297-a5c0-b57fefe6ffde.png)
+![image](https://user-images.githubusercontent.com/66129673/169802036-ac7cb232-7953-4e6a-b6a1-aed4dadd2a08.png)
 
 --------------
 
 ```bash
- sudo mkfs -v -t ext2 /dev/sda1
- sudo mkfs -v -t ext4 /dev/sda3
- sudo mkswap /dev/sda2
+ sudo mkfs -v -t ext2 /dev/sda2
+ sudo mkfs -v -t ext4 /dev/sda4
+ sudo mkswap /dev/sda3
 ```
 
 - Verifications:
@@ -120,9 +127,10 @@ lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sda
 
     NAME   UUID                                 FSTYPE MOUNTPOINT  SIZE
     sda                                                             32G
-    ├─sda1 5e75b741-c5e3-4ac9-88a8-9ccc05856e0c ext2               100M # BOOT
-    ├─sda2 520b9f4b-aadd-42df-aa43-cca4987df169 swap                 4G # SWAP
-    └─sda3 eaa882b4-466e-46c5-8c19-75993770dc8f ext4              27,9G # ROOT
+    |─sda1                                                           1M # BIOS GRUB
+    ├─sda2 5e75b741-c5e3-4ac9-88a8-9ccc05856e0c ext2               100M # BOOT
+    ├─sda3 520b9f4b-aadd-42df-aa43-cca4987df169 swap                 4G # SWAP
+    └─sda4 eaa882b4-466e-46c5-8c19-75993770dc8f ext4              27,9G # ROOT
 
 --------------
 
@@ -132,11 +140,11 @@ lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT,SIZE /dev/sda
 cd
 export LFS=/mnt/lfs
 mkdir -v $LFS
-mount -v -t ext4 /dev/sda3 $LFS
+mount -v -t ext4 /dev/sda4 $LFS
 
-swapoff /dev/sda2 
-mkswap /dev/sda2
-swapon /dev/sda2
+swapoff /dev/sda3 
+mkswap /dev/sda3
+swapon /dev/sda3
 ```
 
 - Avant de récupérer les paquets, assurez-vous que le dossier $LFS/ soit bien vide ! Pour en être sûr, lancez cette commande > 'rm -rvf /mnt/lfs/*'
@@ -272,7 +280,6 @@ cd $LFS/sources/
 
 > ⚠️ Attention: L'installation des paquets peut être très long. Pour connaitre le temps d'installation de tous les paquets, utilisez le script [get-time.sh](https://github.com/vvaucoul/FT_Linux/blob/main/get-time.sh) en indiquant le temps de compilation du premier paquet, binutils...
 > Pour obtenir le temps de compilations du paquet binutils, lancez le script [binutils-time-calculator.sh](https://github.com/vvaucoul/FT_Linux/blob/main/binutils-time-calculator.sh)
-> Personnellement, j'en ai eu pour un total de 26 heures de compilation...
 
   - <strong>[install_softwares.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares.sh)</strong>
   - <strong>[install_softwares_02.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/install_softwares_02.sh)</strong>
@@ -429,7 +436,7 @@ tar -cJpf $HOME/lfs-temp-tools-11.1.tar.xz .
 cd $LFS
 rm -rf ./*
 tar -xpf $HOME/lfs-temp-tools-11.1.tar.xz
-mount -v -t ext4 /dev/sda3 $LFS
+mount -v -t ext4 /dev/sda4 $LFS
 
 mount -v --bind /dev $LFS/dev
 
@@ -458,6 +465,32 @@ Une fois fini, via le nouveau bash installé, rendez vous dans le dossier /sourc
 
 > Ce script met beaucoup de temps pour se finir.
 > Pour savoir ou vous en êtes dans le processus, "GCC", référez-vous au document : [GCC-GNU-TEST-RESULTS](https://gcc.gnu.org/pipermail/gcc-testresults/) (archive gzip'd text file)
+
+--------------
+
+#### - Installation des paquets additionnels (Optionnel)
+
+> L'installation de ces paquets est optionnel. 
+
+```bash
+# Ouvrez un nouveau terminal ou repassez au shell par défault
+sudo su
+cd
+curl https://raw.githubusercontent.com/vvaucoul/FT_Linux/main/wget-additional-list > wget-additional-list
+wget --input-file=wget-additional-list --continue --directory-prefix=$LFS/sources
+
+# Repassez en Chroot
+sudo chroot "$LFS" /usr/bin/env -i          \
+    HOME=/root TERM="$TERM"            \
+    PS1='(lfs chroot) \u:\w\$ '        \
+    PATH=/bin:/usr/bin:/sbin:/usr/sbin \
+    /bin/bash --login
+cd /sources
+
+# Puis lancez le script install-additional-software.sh
+```
+
+- <strong>[install-additional-softwares.sh](https://github.com/vvaucoul/FT_Linux/blob/main/scripts/install/additional/install-additional-softwares.sh)</strong>
 
 --------------
 
@@ -750,9 +783,9 @@ printf "\
 # file system  mount-point  type     options             dump  fsck\n\
 #                                                              order\n\
 \n\
-/dev/sda1      /boot        ext2     defaults            0     0\n\
-/dev/sda3      /            ext4     defaults            1     1\n\
-/dev/sda2      swap         swap     pri=1               0     0\n\
+/dev/sda2      /boot        ext2     defaults            0     0\n\
+/dev/sda4      /            ext4     defaults            1     1\n\
+/dev/sda3      swap         swap     pri=1               0     0\n\
 proc           /proc        proc     nosuid,noexec,nodev 0     0\n\
 sysfs          /sys         sysfs    nosuid,noexec,nodev 0     0\n\
 devpts         /dev/pts     devpts   gid=5,mode=620      0     0\n\
@@ -783,7 +816,7 @@ make modules_install
 # Revenir au Shell root
 exec <&-
 umount /boot
-mount /dev/sda1 /boot
+mount /dev/sda2 /boot
 mount --bind /boot /mnt/lfs/boot
 
 export LFS=/mnt/lfs
@@ -824,41 +857,20 @@ EOF
 ```bash
 grub-install /dev/sda
 
-# For 64 Bits
 cat > /boot/grub/grub.cfg << "EOF"
 # Début de /boot/grub/grub.cfg
 set default=0
 set timeout=5
 
 insmod ext2
-set root=(hd0,1)
+set root=(hd0,gpt2)
 
 menuentry "GNU/Linux, Linux 5.16.9-vvaucoul" {
-        linux   /boot/vmlinuz-x64-5.16.9-vvaucoul root=/dev/sda3 ro
-}
-EOF
-
-# For 32 Bits
-cat > /boot/grub/grub.cfg << "EOF"
-# Début de /boot/grub/grub.cfg
-set default=0
-set timeout=5
-
-insmod ext2
-set root=(hd0,1)
-
-menuentry "GNU/Linux, Linux 5.16.9-vvaucoul" {
-        linux   /boot/vmlinuz-5.16.9-vvaucoul root=/dev/sda3 ro
+        linux   /vmlinuz-x64-5.16.9-vvaucoul root=/dev/sda4 ro
 }
 EOF
 ```
-
-> Si vous obtenez une erreur lors de l'installation de grub, repassez en mode root et exécutez la commande suivante :
-> fdisk /dev/sda
-> - t 1 4
-> - w
-> 
-> puis repassez en chroot LFS et relancez l'installation de grub.
+> Pour une version 32Bits du kernel, enlevez le 'x64' de votre vmlinuz.
 
 ### Finalisations
 
