@@ -21,7 +21,7 @@ Tutoriel de réference: <strong>[LFS](http://fr.linuxfromscratch.org/view/lfs-st
 - <strong>[SDA]</strong> Distribution LFS: Espace disque: 32GB vdi
 - <strong>[SDB]</strong> Système Host. Espace disque: 16GB vdi
 
-> ⚠️ Si vous êtes sur VMWare, pensez à créer un disque virtuel IDE. De plus, il faut impérativement changer dans le bios l'option 'Large Disk Access Mode' pour utiliser 'Other'.
+> ⚠️ Si vous êtes sur VMWare, pensez à créer un disque virtuel IDE. De plus, il faut impérativement changer dans le bios l'option 'Large Disk Access Mode' paramétré par défaut sur 'DOS' pour 'Other' !
 
 ![image](https://user-images.githubusercontent.com/66129673/169803077-419df6b2-d8f6-46e5-bd2b-d02260700c01.png)
 
