@@ -468,6 +468,8 @@ Une fois fini, via le nouveau bash installé, rendez vous dans le dossier /sourc
 
 --------------
 
+#### - Installation des paquets additionnels (Optionnel)
+
 > L'installation de ces paquets est optionnel. 
 
 ```bash
