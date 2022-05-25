@@ -520,19 +520,20 @@ bash /usr/lib/udev/init-net-rules.sh
 cd /etc/sysconfig/
 cat > ifconfig.eth0 << "EOF"
 ONBOOT=yes
-IFACE=eth0
+IFACE=enp0s3
 SERVICE=ipv4-static
-IP=192.168.1.2
-GATEWAY=192.168.1.1
+IP=10.0.2.1
+GATEWAY=10.0.2.2
 PREFIX=24
-BROADCAST=192.168.1.255
+BROADCAST=10.0.2.255
 EOF
 
 cat > /etc/resolv.conf << "EOF"
 # Begin /etc/resolv.conf
 
-nameserver 1.1.1.1
-nameserver 1.0.0.1
+domain 42.fr
+search 42.fr
+nameserver 10.51.1.5
 
 # End /etc/resolv.conf
 EOF
@@ -544,8 +545,7 @@ echo $HOST_NAME > /etc/hostname
 printf "\
 # Begin /etc/hosts\n\
 \n\
-127.0.0.1 localhost\n\
-$NETW_IP $HOST_NAME\n\
+127.0.0.1 localhost.localdomain localhost\n\
 ::1       localhost ip6-localhost ip6-loopback\n\
 ff02::1   ip6-allnodes\n\
 ff02::2   ip6-allrouters\n\
